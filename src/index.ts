@@ -13,7 +13,7 @@ import { timeout } from 'hono/timeout'
 
 
 // import { UserRouter } from './drizzle/users/user.router';
-import { authRouter } from './auth/auth.router'
+import { authRouter } from './authentication/auth.router'
 
 
 const app = new Hono().basePath('/api')

@@ -10,11 +10,16 @@ import { trimTrailingSlash } from 'hono/trailing-slash'
 import { HTTPException } from 'hono/http-exception'
 import { timeout } from 'hono/timeout'
 
-
-
 // import { UserRouter } from './drizzle/users/user.router';
 import { authRouter } from './authentication/auth.router'
-
+import { paymentsRouter } from './payments/payments.router'
+import { UserRouter } from './users/user.router'
+import { bookingsRouter } from './bookings/bookings.router'
+import { customerSupportTicketsRouter } from './customerSupportTickets/customerSupportTickets.router'
+import { fleetManagementRouter } from './fleetManagement/fleetManagement.router'
+import { locationsRouter } from './locations/locations.router'
+import { vehiclesRouter } from './vehicles/vehicles.router'
+import { vehicleSpecificationsRouter } from './vehicleSpecifications/vehicleSpecifications.router'
 
 const app = new Hono().basePath('/api')
 
@@ -32,9 +37,6 @@ app.use('*', registerMetrics)
 app.use('/', timeout(10000, customTimeoutException))
 app.use('*', registerMetrics)
 
-
-
-
 app.get('/ok', (c) => {
   return c.text('The server is running☑️')
 })
@@ -44,12 +46,17 @@ app.get('/timeout', async (c) => {
 })
 app.get('/metrics', printMetrics)
 
-
-//Routes
-// app.route('/', UserRouter)  // api/users
-app.route('/',authRouter)   // api/auth/register   or api/auth/login
-
-
+// Routes
+app.route('/', UserRouter)  // api/users
+app.route('/', authRouter)   // api/auth/register or api/auth/login
+app.route('/', paymentsRouter)  // api/payments
+app.route('/', bookingsRouter)  // api/bookings
+app.route('/', customerSupportTicketsRouter)  // api/customerSupportTickets
+app.route('/', fleetManagementRouter)  // api/fleetManagement
+app.route('/', locationsRouter)  // api/locations
+app.route('/', paymentsRouter)  // api/payments
+app.route('/', vehiclesRouter)  // api/vehicles
+app.route('/', vehicleSpecificationsRouter)  // api/vehicleSpecifications
 
 // default route
 app.get('/', (c) => {
@@ -99,22 +106,21 @@ app.get('/', (c) => {
 </head>
 <body>
   <header>
-    <h1>Welcome to Our Restaurant API</h1>
+    <h1>Welcome to Our Car Rental API</h1>
   </header>
   <main>
     <h1>Hello, I am Cyrus Kimutai 😊</h1>
 
-    <p>Welcome to our restaurant API. Here you can find a variety of services to manage your restaurant data.</p>
+    <p>Welcome to our  Car Rental API. Here you can find a variety of services to manage your car rental data.</p>
   </main>
   <footer>
-    <p>&copy; 2024 Restaurant API. All rights reserved.</p>
+    <p>&copy; 2024  Car Rental API. All rights reserved.</p>
   </footer>
 </body>
 </html>
   `;
   return c.html(html);
 });
-
 
 // const port = 3000 
 const port = Number(process.env.PORT)
@@ -127,14 +133,3 @@ serve({
   fetch: app.fetch,
   port: 3000,
 });
-
-
-
-
-
-
-
-
-
-
-

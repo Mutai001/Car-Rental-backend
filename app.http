@@ -8,441 +8,9 @@ GET http://localhost:3000/api/timeout
 ###
  GET http://localhost:3000/api/metrics
 
+### Authentication
 
-###
-GET http://localhost:3000/api/users
-
-###
-GET http://localhost:3000/api/users
-###
-GET http://localhost:3000/api/users
-Authorization: 
-
-###
-
-POST http://localhost:3000/api/users
-Authorization:
-Content-Type: application/json
-
-{
-    "id": 20,
-    "name": "Moses",
-    "contact_phone": "+254729023",
-    "phone_verified": true,
-    "email": "Moses@gmail.com",
-    "email_verified": false,
-    "confirmation_code": "12000022",
-     "password": "emmaniue123",
-      "created_at": "2022-03-08 00:00:00",
-  "updated_at": "2022-03-12 00:00:00"
-}
-
-###
-
-PUT http://localhost:3000/api/users/18
-Content-Type: application/json
-
-{
-    "name": "Cyrus"
-}
-###
-DELETE http://localhost:3000/api/users/2
-
-
-###
-GET http://localhost:3000/api/states
-
-
-###
-GET http://localhost:3000/api/states/4
-
-###
-
-POST http://localhost:3000/api/states
-Content-Type: application/json
-
-{
-  "id": 10,
-  "name": "Djibouti",
-  "code": "211"
-  }
-
-###
-
-PUT http://localhost:3000/api/states/4
-Content-Type: application/json
-
-{
-    "name": "Ghana"
-}
-###
-DELETE http://localhost:3000/api/states/1
-
-###
-
-GET http://localhost:3000/api/city
-
-###
-
-GET http://localhost:3000/api/city/3
-
-###
-POST http://localhost:3000/api/city
-Content-Type: application/json
-
-{
-   
-    "name": "Niger",
-    "state_id": 1,
-    "address": "234",
-    "state": "Abuja",
-    "restaurant": "Luckymall"
-}
-
-###
-
-PUT http://localhost:3000/api/city/2
-Content-Type: application/json
-
-{
-    "name": "Kenya"
-}
-###
-DELETE http://localhost:3000/api/city/2
-
-###
-
-GET http://localhost:3000/api/restaurant
-
-###
-GET http://localhost:3000/api/restaurant/1
-
-
-###
-POST http://localhost:3000/api/restaurant
-Content-Type: application/json
-
-{
- "name": "Fast food ",
-  "street_address": "123 Main Street",
-  "zip_code": "98101",
-  "city_id": 2,
-  "menu_item": "Spaghetti Carbonara",
-  "orders": "Pending",
-  "city": "Seattle",
- "city_id": 1,
- "created_at": "2023-09-02T00:00:00.000Z",
- "updated_at": "2023-01-02T00:00:00.000Z"
-}
-
-###
-
-PUT http://localhost:3000/api/restaurant/1
-Content-Type: application/json
-    
-    {
-        "name": "weston 001"
-    }
-
-
-###
-DELETE http://localhost:3000/api/restaurants/2
-
-###
-
-
-GET http://localhost:3000/api/category
-
-###
-
-POST http://localhost:3000/api/category
-Content-Type: application/json
-
-{
-    "name": "Delicious Bistro",
-  "menu_item": "123 Main Street"
-}
-
-###
-
-PUT http://localhost:3000/api/category/2
-Content-Type: application/json
-
-{
-    "name": "Soft drinks"
-}
-###
-DELETE http://localhost:3000/api/category/1
-
-###
-
-
-GET http://localhost:3000/api/MenuItem
-
-###
-
-POST http://localhost:3000/api/MenuItem
-Content-Type: application/json
-
-{
-  "name": "Delicious Bistro",
-  "restaurant_id": 2,
-  "category_id": 1,
-  "description": "pizza",
-  "ingredients": "served while hot",
-  "active": true,
-  "created_at": "2024-01-10T00:00:00.000Z",
-  "updated_at": "2024-01-12T00:00:00.000Z",
-  "category": 1
-}
-
-###
-
-PUT http://localhost:3000/api/MenuItem/2
-Content-Type: application/json
-
-{
-    "name": "Bistro"
-}
-###
-DELETE http://localhost:3000/api/MenuItem/2
-
-###
-GET http://localhost:3000/api/OrderMenuItem
-
-###
-POST http://localhost:3000/api/OrderMenuItem
-Content-Type: application/json
-{
-    "order_id": 5,
-    "order_id": 11,
-    "menu_item_id": 1,
-    "quantity": 20,
-    "created_at": "2023-06-04T13:00:00.000Z",
-    "updated_at": "2023-08-04T13:00:00.000Z"
-}
-
-###
-
-GET http://localhost:3000/api/address
-
-###
-
-POST http://localhost:3000/api/address
-Content-Type: application/json
-
-{
-    "street_address_1": "29990",
-    "street_address_2": "199300",
-    "zip_code": "22030k",
-    "delivery_instructions": "Behind citymall",
-    "user_id": 2,
-    "city_id": 3}
-
-###
-PUT http://localhost:3000/api/address/1
-Content-Type: application/json
-
-{
-    "name": "29990"
-}
-###
-DELETE http://localhost:3000/api/address/2
-
-###
-
-GET http://localhost:3000/api/comments
-
-###
-
-POST http://localhost:3000/api/comments
-Content-Type: application/json
-
-{
-    "order_id": 5,
-    "user_id": 1,
-    "comment_text": "delicious meal",
-    "is_complaint": false,
-    "is_praise":true
-}
-
-###
-PUT http://localhost:3000/api/comments/1
-Content-Type: application/json
-
-{
-    "is_complaint": true
-}
-###
-DELETE http://localhost:3000/api/comment/2
-
-###
-GET http://localhost:3000/api/orders
-
-###
-
-POST http://localhost:3000/api/orders
-Content-Type: application/json
-
-{
-    "restaurant_id": 2,
-    "delivery_address_id": 1,
-    "user_id": 1,
-    "driver_id": 1,
-    "price":2344.50,
-    "order_menu_item":"pizza",
-    "order_status":"delivery",
-    "restaurant":"Weston"
-}
-
-###
-PUT http://localhost:3000/api/orders/3
-Content-Type: application/json
-
-{
-    "restaurant": "West hotel"
-}
-###
-DELETE http://localhost:3000/api/orders/3
-
-###
-GET http://localhost:3000/api/driver
-
-###
-
-POST http://localhost:3000/api/driver
-Content-Type: application/json
-
-{
-    "car_make": "toyota",
-    "car_model": "crown",
-    "car_year": 2020,
-    "user_id": 1,
-    "online": true,
-    "delivering": true,
-    "delivering": true,
-    "cretaed_at": "2023-01-02T00:00:00.000Z",
-    "updated_at": "2023-01-02T00:00:00.000Z"
-    }
-
-###
-PUT http://localhost:3000/api/driver/1
-Content-Type: application/json
-
-{
-    "car_model": "mercedes"
-}
-###
-DELETE http://localhost:3000/api/driver/2
-
-###
-GET http://localhost:3000/api/OrderMenuItem
-
-###
-
-POST http://localhost:3000/api/OrderMenuItem
-Content-Type: application/json
-
-{
-     "order_id": 5,
-    "menu_item_id": 3,
-    "quantity": 20,
-    "item_price": 3000,
-    "price": 23445.34,
-    "comment": "fast delivery",
-    "users":"Resho",
-    "menu_item":"shoe",
-    "orders":"order 1"
-}
-
-###
-PUT http://localhost:3000/api/OrderMenuItem/3
-Content-Type: application/json
-
-{
-    "quantity": "30"
-}
-###
-DELETE http://localhost:3000/api/OrderMenuItem/2
-
-###
-GET http://localhost:3000/api/OrderStatus
-
-###
-
-POST http://localhost:3000/api/OrderStatus
-Content-Type: application/json
-
-{
-   "id": 10,
-    "order_id": 13,
-    "status_id": 8,
-    "created_at": "2024-06-02T11:00:00.000Z",
-    "updated_at": "2023-06-02T12:00:00.000Z"
-}
-
-###
-PUT http://localhost:3000/api/OrderStatus/2
-Content-Type: application/json
-
-{
-    "orders": "clothes"
-}
-###
-DELETE http://localhost:3000/api/orderStatus/4
-
-###
-GET http://localhost:3000/api/restaurant_owners
-
-###
-
-POST http://localhost:3000/api/restaurant_owners
-Content-Type: application/json
-
-{
-     "restaurant_id": 2,
-    "owner_id": 1,
-    "users": "John Doe",
-    "restaurant": " Weston"
-}
-
-###
-PUT http://localhost:3000/api/restaurant_owners/1
-Content-Type: application/json
-
-{
-    "restaurant": "Weston"
-}
-###
-DELETE http://localhost:3000/api/restaurant_owners/1
-
-###
-
-GET http://localhost:3000/api/status_catalog
-
-###
-
-POST http://localhost:3000/api/status_catalog
-Content-Type: application/json
-
-{
-     "name": "Clothes",
-    "order_status": "delivered"
-}
-
-###
-PUT http://localhost:3000/api/status_catalog/1
-Content-Type: application/json
-
-{
-    "name": "shoes"
-}
-###
-DELETE http://localhost:3000/api/status_catalog/1
-
-###Authorization and Authentication
-
-POST http://localhost:3000/api/register
+POST http://localhost:5000/api/register
 Content-Type: application/json
 
 {
@@ -451,8 +19,9 @@ Content-Type: application/json
     "password": "@cyruskimutai"
 }
 
-### 
-POST http://localhost:3000/api/login
+### Login
+
+POST http://localhost:5000/api/login
 Content-Type: application/json
 
 {
@@ -460,20 +29,22 @@ Content-Type: application/json
     "password": "pass123"
 }
 
-###admin
-POST http://localhost:3000/api/register
+### Admin Registration
+
+POST http://localhost:5000/api/register
 Content-Type: application/json
 
 {
-    "userId": 5, 
-    "password": "@cyeKimutai",  
-    "username": "Cyrus", 
-    "role": "admin",   
+    "userId": 5,
+    "password": "@cyeKimutai",
+    "username": "Cyrus",
+    "role": "admin",
     "email": "kimtaicyrus@gmail.com"
 }
 
-### 
-POST http://localhost:3000/api/login
+### Admin Login
+
+POST http://localhost:5000/api/login
 Content-Type: application/json
 
 {
@@ -481,67 +52,123 @@ Content-Type: application/json
     "password": "johnleo2002"
 }
 
+### Bookings
 
-
-###
-GET http://localhost:3000/api/users/
-Authorization:eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJKb2huaWUiLCJyb2xlIjoiYWRtaW4iLCJleHAiOjE3MTgyOTczMjB9.5ok4AK-YlfpzGamtsKZMYuZ8xFHf_fCtmgocjLw08cc
-
-###
-GET http://localhost:3000/api/users
+GET http://localhost:5000/api/bookings
 Authorization: $2b$10$xHJBxvoEqe9AfMDVw1jMje/9vSoVDgyqOGDnVYakq33J9QXMGeAry
 
+POST http://localhost:5000/api/bookings
+Content-Type: application/json
+Authorization: $2b$10$xHJBxvoEqe9AfMDVw1jMje/9vSoVDgyqOGDnVYakq33J9QXMGeAry
 
+PUT http://localhost:5000/api/bookings/1
+Content-Type: application/json
+Authorization: $2b$10$xHJBxvoEqe9AfMDVw1jMje/9vSoVDgyqOGDnVYakq33J9QXMGeAry
 
+DELETE http://localhost:5000/api/bookings/2
+Authorization: $2b$10$xHJBxvoEqe9AfMDVw1jMje/9vSoVDgyqOGDnVYakq33J9QXMGeAry
 
+### Customer Support Tickets
 
+GET http://localhost:5000/api/customerSupportTickets
+Authorization: $2b$10$xHJBxvoEqe9AfMDVw1jMje/9vSoVDgyqOGDnVYakq33J9QXMGeAry
 
+POST http://localhost:5000/api/customerSupportTickets
+Content-Type: application/json
+Authorization: $2b$10$xHJBxvoEqe9AfMDVw1jMje/9vSoVDgyqOGDnVYakq33J9QXMGeAry
 
+PUT http://localhost:5000/api/customerSupportTickets/1
+Content-Type: application/json
+Authorization: $2b$10$xHJBxvoEqe9AfMDVw1jMje/9vSoVDgyqOGDnVYakq33J9QXMGeAry
 
+DELETE http://localhost:5000/api/customerSupportTickets/2
+Authorization: $2b$10$xHJBxvoEqe9AfMDVw1jMje/9vSoVDgyqOGDnVYakq33J9QXMGeAry
 
+### Fleet Management
 
+GET http://localhost:5000/api/fleetManagement
+Authorization: $2b$10$xHJBxvoEqe9AfMDVw1jMje/9vSoVDgyqOGDnVYakq33J9QXMGeAry
 
+POST http://localhost:5000/api/fleetManagement
+Content-Type: application/json
+Authorization: $2b$10$xHJBxvoEqe9AfMDVw1jMje/9vSoVDgyqOGDnVYakq33J9QXMGeAry
 
+PUT http://localhost:5000/api/fleetManagement/1
+Content-Type: application/json
+Authorization: $2b$10$xHJBxvoEqe9AfMDVw1jMje/9vSoVDgyqOGDnVYakq33J9QXMGeAry
 
+DELETE http://localhost:5000/api/fleetManagement/2
+Authorization: $2b$10$xHJBxvoEqe9AfMDVw1jMje/9vSoVDgyqOGDnVYakq33J9QXMGeAry
 
+### Locations
 
+GET http://localhost:5000/api/locations
+Authorization: $2b$10$xHJBxvoEqe9AfMDVw1jMje/9vSoVDgyqOGDnVYakq33J9QXMGeAry
 
+POST http://localhost:5000/api/locations
+Content-Type: application/json
+Authorization: $2b$10$xHJBxvoEqe9AfMDVw1jMje/9vSoVDgyqOGDnVYakq33J9QXMGeAry
 
+PUT http://localhost:5000/api/locations/1
+Content-Type: application/json
+Authorization: $2b$10$xHJBxvoEqe9AfMDVw1jMje/9vSoVDgyqOGDnVYakq33J9QXMGeAry
 
+DELETE http://localhost:5000/api/locations/2
+Authorization: $2b$10$xHJBxvoEqe9AfMDVw1jMje/9vSoVDgyqOGDnVYakq33J9QXMGeAry
 
+### Payments
 
+GET http://localhost:5000/api/payments
+Authorization: $2b$10$xHJBxvoEqe9AfMDVw1jMje/9vSoVDgyqOGDnVYakq33J9QXMGeAry
 
+POST http://localhost:5000/api/payments
+Content-Type: application/json
+Authorization: $2b$10$xHJBxvoEqe9AfMDVw1jMje/9vSoVDgyqOGDnVYakq33J9QXMGeAry
 
+PUT http://localhost:5000/api/payments/1
+Content-Type: application/json
+Authorization: $2b$10$xHJBxvoEqe9AfMDVw1jMje/9vSoVDgyqOGDnVYakq33J9QXMGeAry
 
+DELETE http://localhost:5000/api/payments/2
+Authorization: $2b$10$xHJBxvoEqe9AfMDVw1jMje/9vSoVDgyqOGDnVYakq33J9QXMGeAry
 
+### Users
 
+GET http://localhost:5000/api/users
+Authorization: $2b$10$xHJBxvoEqe9AfMDVw1jMje/9vSoVDgyqOGDnVYakq33J9QXMGeAry
 
+POST http://localhost:5000/api/users
+Content-Type: application/json
+Authorization: $2b$10$xHJBxvoEqe9AfMDVw1jMje/9vSoVDgyqOGDnVYakq33J9QXMGeAry
 
+PUT http://localhost:5000/api/users/1
+Content-Type: application/json
+Authorization: $2b$10$xHJBxvoEqe9AfMDVw1jMje/9vSoVDgyqOGDnVYakq33J9QXMGeAry
 
+DELETE http://localhost:5000/api/users/2
+Authorization: $2b$10$xHJBxvoEqe9AfMDVw1jMje/9vSoVDgyqOGDnVYakq33J9QXMGeAry
 
+### Vehicles
 
+GET http://localhost:5000/api/vehicles
+Authorization: $2b$10$xHJBxvoEqe9AfMDVw1jMje/9vSoVDgyqOGDnVYakq33J9QXMGeAry
 
+POST http://localhost:5000/api/vehicles
+Content-Type: application/json
+Authorization: $2b$10$xHJBxvoEqe9AfMDVw1jMje/9vSoVDgyqOGDnVYakq33J9QXMGeAry
 
+PUT http://localhost:5000/api/vehicles/1
+Content-Type: application/json
+Authorization: $2b$10$xHJBxvoEqe9AfMDVw1jMje/9vSoVDgyqOGDnVYakq33J9QXMGeAry
 
+DELETE http://localhost:5000/api/vehicles/2
+Authorization: $2b$10$xHJBxvoEqe9AfMDVw1jMje/9vSoVDgyqOGDnVYakq33J9QXMGeAry
 
+### Vehicle Specifications
 
+GET http://localhost:5000/api/vehicleSpecifications
+Authorization: $2b$10$xHJBxvoEqe9AfMDVw1jMje/9vSoVDgyqOGDnVYakq33J9QXMGeAry
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+POST http://localhost:5000/api/vehicleSpecifications
+Content-Type: application/json
+Authorization: $2b$10$xHJBxvoEqe9AfMDVw

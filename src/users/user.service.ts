@@ -1,6 +1,6 @@
 import { eq } from "drizzle-orm"
-import db from "../db"
-import { UserSelect, usersTable, UserInsert } from '../schema';
+import db from "../drizzle/db"
+import { UserSelect, usersTable, UserInsert } from '../drizzle/schema';
  interface   getAllUsers{
     limit?: number;
     details?: boolean;
@@ -8,20 +8,7 @@ import { UserSelect, usersTable, UserInsert } from '../schema';
 
 //Fetch all user
 export const getAllUsers = async (limit?: number): Promise<UserSelect[] | null> => {
-          return await db.query.usersTable.findMany({
-            limit: limit,
-            with:{
-                orders:{
-                    columns:{price: true}
-                },
-                addresses:{
-                    columns:{street_address_1:true,street_address_2:true}
-                },
-                drivers:{
-                    columns:{car_make:true,car_model:true,car_year:true,online:true}
-                },                
-            }
-        });
+          return await db.query.usersTable.findMany({});
     
     return await db.query.usersTable.findMany();
 }
@@ -29,7 +16,7 @@ export const getAllUsers = async (limit?: number): Promise<UserSelect[] | null> 
 // fetch one user
 export const fetchOneUsers = async (id: number): Promise<UserSelect | undefined> => {
 return await db.query.usersTable.findFirst({
-    where: eq(usersTable.id, id)
+    where: eq(usersTable.userId, id)
 })
 }
 
@@ -42,11 +29,11 @@ export const CreateUser = async (user: UserInsert) => {
 
 // update user
 export const UpdateUser = async (id: number, Address: UserInsert) => {
-    await db.update(usersTable).set(Address).where(eq(usersTable.id, id))
+    await db.update(usersTable).set(Address).where(eq(usersTable.userId, id))
     return "Address updated successfully";
 }
 // delete user
 export const DeleteUser = async (id: number) => {
-    await db.delete(usersTable).where(eq(usersTable.id, id))
+    await db.delete(usersTable).where(eq(usersTable.userId, id))
     return "User deleted successfully"
 }

@@ -1,76 +1,84 @@
 import { Context } from "hono";
-import { 
-    vehiclesService, 
-    deleteVehicleService, 
-    getVehicleByIdService, 
-    insertVehicleService, 
-    updateVehicleService 
-} from "./vehicles.service";
+import { getAllVehiclesService, getVehicleByIdService, createVehicleService, updateVehicleService, deleteVehicleService } from "./vehicles.service";
 
-// List all vehicles
-export const listAllVehicles = async (c: Context) => {
+// Get all vehicles
+export const getAllVehiclesController = async (c: Context) => {
     try {
-        const vehicles = await vehiclesService();
-        if (vehicles === null) return c.text("No vehicles found");
+        const vehicles = await getAllVehiclesService();
+        if (!vehicles || vehicles.length === 0) {
+            return c.text("No vehicles found", 404);
+        }
         return c.json(vehicles, 200);
     } catch (error: any) {
-        return c.text("Error while fetching vehicles", 400);
+        return c.json({ error: error?.message }, 500);
     }
-}
+};
 
 // Get vehicle by ID
-export const getVehicleById = async (c: Context) => {
-    const id = parseInt(c.req.param("id"));
+export const getVehicleByIdController = async (c: Context) => {
     try {
-        if (isNaN(id)) return c.text("Invalid ID", 400);
+        const id = parseInt(c.req.param("id"));
+        if (isNaN(id)) {
+            return c.text("Invalid id", 400);
+        }
         const vehicle = await getVehicleByIdService(id);
-        if (vehicle === undefined) return c.text("Vehicle not found 😒", 404);
+        if (!vehicle) {
+            return c.text("Vehicle not found", 404);
+        }
         return c.json(vehicle, 200);
     } catch (error: any) {
-        return c.text(error?.message, 400);
+        return c.json({ error: error?.message }, 500);
     }
-}
+};
 
-// Insert vehicle
-export const insertVehicle = async (c: Context) => {
+// Create vehicle
+export const createVehicleController = async (c: Context) => {
     try {
         const vehicle = await c.req.json();
-        const createdVehicle = await insertVehicleService(vehicle);
-        if (createdVehicle === undefined) {
-            return c.text("Error while inserting vehicle", 400);
+        const newVehicle = await createVehicleService(vehicle);
+
+        if (!newVehicle) {
+            return c.text("Vehicle not created", 400);
         }
-        return c.json(createdVehicle, 201);
+        return c.json({ message: "Vehicle created successfully" }, 201);
     } catch (error: any) {
-        return c.text(error?.message, 400);
+        return c.json({ error: error?.message }, 500);
     }
-}
+};
 
 // Update vehicle
-export const updateVehicle = async (c: Context) => {
-    const id = parseInt(c.req.param("id"));
-    if (isNaN(id)) return c.text("Invalid ID", 400);
-    const vehicle = await c.req.json();
+export const updateVehicleController = async (c: Context) => {
     try {
-        const existingVehicle = await getVehicleByIdService(id);
-        if (existingVehicle === undefined) return c.text("Vehicle not found", 404);
+        const id = parseInt(c.req.param("id"));
+        if (isNaN(id)) {
+            return c.text("Invalid id", 400);
+        }
+        const vehicle = await c.req.json();
         const updatedVehicle = await updateVehicleService(id, vehicle);
-        if (!updatedVehicle) return c.text("Error while updating vehicle", 400);
-        return c.json({ msg: updatedVehicle }, 200);
+
+        if (!updatedVehicle) {
+            return c.text("Vehicle not updated", 400);
+        }
+        return c.json({ message: "Vehicle updated successfully" }, 200);
     } catch (error: any) {
-        return c.text(error?.message, 400);
+        return c.json({ error: error?.message }, 500);
     }
-}
+};
 
 // Delete vehicle
-export const deleteVehicle = async (c: Context) => {
-    const id = Number(c.req.param("id"));
+export const deleteVehicleController = async (c: Context) => {
     try {
-        if (isNaN(id)) return c.text("Invalid ID", 400);
-        const existingVehicle = await getVehicleByIdService(id);
-        if (existingVehicle === undefined) return c.text("Vehicle not found", 404);
+        const id = parseInt(c.req.param("id"));
+        if (isNaN(id)) {
+            return c.text("Invalid id", 400);
+        }
         const deletedVehicle = await deleteVehicleService(id);
-        return c.json({ msg: deletedVehicle }, 200);
+
+        if (!deletedVehicle) {
+            return c.text("Vehicle not deleted", 400);
+        }
+        return c.json({ message: "Vehicle deleted successfully" }, 200);
     } catch (error: any) {
-        return c.text(error?.message, 400);
+        return c.json({ error: error?.message }, 500);
     }
-}
+};

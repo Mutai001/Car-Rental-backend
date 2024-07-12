@@ -1,39 +1,36 @@
-import { eq } from "drizzle-orm"
-import db from "../drizzle/db"
-import { UserSelect, usersTable, UserInsert } from '../drizzle/schema';
- interface   getAllUsers{
-    limit?: number;
-    details?: boolean;
- }
+// user.service.ts
+import { db } from "../drizzle/db";
+import { TIUser, TSUser, UsersTable } from "../drizzle/schema";
+import { eq } from "drizzle-orm";
 
-//Fetch all user
-export const getAllUsers = async (limit?: number): Promise<UserSelect[] | null> => {
-          return await db.query.usersTable.findMany({});
-    
-    return await db.query.usersTable.findMany();
-}
+// GET ALL USERS
+export const getUsersService = async (): Promise<TSUser[] | null> => {
+    const users = await db.query.UsersTable.findMany();
+    return users;
+};
 
-// fetch one user
-export const fetchOneUsers = async (id: number): Promise<UserSelect | undefined> => {
-return await db.query.usersTable.findFirst({
-    where: eq(usersTable.userId, id)
-})
-}
+// GET USER BY ID
+export const getUserByIdService = async (id: number): Promise<TSUser | undefined> => {
+    const user = await db.query.UsersTable.findFirst({
+        where: eq(UsersTable.user_id, id)
+    });
+    return user;
+};
 
+// CREATE USER
+export const createUserService = async (user: TIUser): Promise<string> => {
+    await db.insert(UsersTable).values(user);
+    return "User created successfully";
+};
 
-// create user
-export const CreateUser = async (user: UserInsert) => {
-    await db.insert(usersTable).values(user)
-    return "User created successfully"
-}
+// UPDATE USER
+export const updateUserService = async (id: number, user: TIUser): Promise<string> => {
+    await db.update(UsersTable).set(user).where(eq(UsersTable.user_id, id));
+    return "User updated successfully";
+};
 
-// update user
-export const UpdateUser = async (id: number, Address: UserInsert) => {
-    await db.update(usersTable).set(Address).where(eq(usersTable.userId, id))
-    return "Address updated successfully";
-}
-// delete user
-export const DeleteUser = async (id: number) => {
-    await db.delete(usersTable).where(eq(usersTable.userId, id))
-    return "User deleted successfully"
-}
+// DELETE USER
+export const deleteUserService = async (id: number): Promise<string> => {
+    await db.delete(UsersTable).where(eq(UsersTable.user_id, id));
+    return "User deleted successfully";
+};

@@ -1,19 +1,25 @@
-import "dotenv/config";
-// import { migrate } from "drizzle-orm/node-postgres/migrator";
-import {migrate} from "drizzle-orm/neon-http/migrator"
-
-import db, { client } from "./db";
+import 'dotenv/config';
+import { migrate } from 'drizzle-orm/node-postgres/migrator';
+import { db } from './db';
 
 async function migration() {
-    await migrate(db, { migrationsFolder: __dirname + "/migrations" })
-    await client.end()
+  console.log('======== Migrations started ========');
+
+  try {
+    await migrate(db, {
+        migrationsFolder: __dirname + "/migrations"
+      });
+    console.log('======== Migrations completed ========');
+  } catch (err) {
+    const error = err as Error;
+    console.error('Migration error:', error.message);
+  } finally {
+    process.exit(0);
+  }
 }
 
 migration().catch((err) => {
-    console.error(err)
-    process.exit(0)
-})
-
-
-
-
+  const error = err as Error;
+  console.error('Migration error:', error.message);
+  process.exit(1);
+});

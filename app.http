@@ -1,22 +1,252 @@
 ###
-GET http://localhost:3000/api
+GET http://localhost:8000/api
 
 
 ###
-GET http://localhost:3000/api/timeout
+GET http://localhost:8000/api/timeout
 
+
+
+//fetch all users
 ###
- GET http://localhost:3000/api/metrics
+GET  http://localhost:8000/api/users
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjo1LCJ1c2VybmFtZSI6IkN5cnVzIiwicm9sZSI6ImFkbWluIiwiaWF0IjoxNzIwNzIzNDE4LCJleHAiOjE3MjA3MjcwMTh9.YZuzWw-7m5mSYKJ4xiwIy0-GYr731TXNOOS_Zx0mfQ4
 
-### Authentication
 
-POST http://localhost:5000/api/register
+//fetching one user
+###
+GET  http://localhost:8000/api/users/3
+
+
+
+//updaing a user
+###
+PUT   http://localhost:5000/api/users/3
 Content-Type: application/json
 
 {
-    "userId": 1,
-    "username": "Cyrus",
-    "password": "@cyruskimutai"
+    "fullName": "Joel Dae"
+}
+
+
+
+###
+POST http://localhost:5000/api/users
+Content-Length: application/json
+
+{
+    "userId": 12,
+  "fullName": "Lyn Dave",
+  "email": "Lyne@example.com",
+  "contactPhone": "(157) 459-7890",
+  "address": "100 Main Street, Nax, CA 12945",
+  "role": "user",
+"password": "annn34884",
+  "createdAt": "2024-07-09",
+  "updatedAt": "2024-07-01"
+}
+
+//Deleting a user
+###
+DELETE http://localhost:5000/api/users/5
+
+
+
+
+### Bookings
+//fetch all bookings
+GET http://localhost:5000/api/bookings
+
+
+
+//fetching one booking
+###
+GET  http://localhost:5000/api/bookings/9
+
+
+###
+POST http://localhost:5000/api/bookings/11
+Content-Type: application/json 
+
+{
+
+    "bookingStatus": "Confirmed"
+
+}
+
+
+###
+PUT http://localhost:5000/api/bookings/1
+Content-Type: application/json
+
+{
+    "bookingId": 21,
+    "userId": 4,
+    "vehicleId": 1,
+    "locationId": 3,
+    "bookingDate": "2024-07-21",
+    "returnDate": "2024-07-29",
+    "totalAmount": "280.00",
+    "bookingStatus": "Pending",
+    "createdAt": "2024-07-02 12:36:13.384034",
+    "updatedAt": "2024-07-02 12:36:13.384034"
+}
+
+
+###
+DELETE http://localhost:5000/api/bookings/2
+
+
+
+### Customer Support Tickets
+GET http://localhost:8000/api/customer-support-tickets
+
+
+
+
+###
+POST http://localhost:8000/api/customer-support-tickets
+
+
+
+###
+PUT http://localhost:8000/api/customer-support-tickets/1
+
+
+
+###
+DELETE http://localhost:8000/api/customerSupportTickets/2
+
+
+
+
+### Fleet Management
+GET http://localhost:8000/api/fleet-management
+
+
+
+###
+POST http://localhost:8000/api/fleet-management
+
+
+
+
+###
+DELETE http://localhost:8000/api/fleet-management/2
+
+
+
+
+### Locations
+GET http://localhost:8000/api/locations
+
+
+
+
+
+### Locations
+GET http://localhost:8000/api/locations/1
+
+
+
+
+###
+POST http://localhost:8000/api/locations
+Content-Type: application/json
+{
+     "locationId": 10,
+    "name": "Sub Branch",
+    "address": "1123 main Street, Anytawn, CA 223345",
+    "contactPhone": "(125) 555-1221",
+    "createdAt": "2023-07-04 09:53:01.534061",
+    "updatedAt": "2023-07-04 09:53:01.534061"
+}
+
+
+
+###
+PUT http://localhost:8000/api/locations/1
+
+
+
+
+###
+DELETE http://localhost:8000/api/locations/2
+
+
+### Payments
+GET http://localhost:8000/api/payments
+
+###
+GET http://localhost:8000/api/payments/1
+
+
+###
+PUT http://localhost:5000/api/payments/1
+Content-Type: application/json
+{
+
+
+}
+
+###
+DELETE http://localhost:8000/api/payments/2
+
+
+
+### Users
+
+GET http://localhost:8000/api/users
+
+
+###
+POST http://localhost:8000/api/users
+
+
+###
+PUT http://localhost:8000/api/users/1
+
+
+###
+DELETE http://localhost:8000/api/users/2
+Authorization: $2b$10$xHJBxvoEqe9AfMDVw1jMje/9vSoVDgyqOGDnVYakq33J9QXMGeAry
+
+# Vehicles
+### 
+GET http://localhost:8000/api/vehicles
+
+
+###
+POST http://localhost:8000/api/vehicles/3
+
+
+###
+PUT http://localhost:8000/api/vehicles/1
+Connection: 
+
+
+
+###
+DELETE http://localhost:5000/api/vehicles/2
+
+
+### Vehicle Specifications
+
+GET http://localhost:5000/api/vehicleSpecifications
+
+
+###
+POST http://localhost:5000/api/vehicleSpecifications
+
+
+
+
+### Authentication
+POST http://localhost:5000/api/register
+Content-Type: application/json
+
+{ 
+
 }
 
 ### Login
@@ -26,149 +256,28 @@ Content-Type: application/json
 
 {
     "username": "Cyrus",
-    "password": "pass123"
+    "password": "$2b$10$.vsXpC9Rk/6ehdLXyqBOZe4VCSE51Yaglj2G1qy.s2xoxDdtmixYa"
 }
 
 ### Admin Registration
 
-POST http://localhost:5000/api/register
+POST http://localhost:8000/api/signup
 Content-Type: application/json
 
 {
-    "userId": 5,
-    "password": "@cyeKimutai",
-    "username": "Cyrus",
+    "userId": 6,
+    "password": "admin1234",
+    "username": "admin",
     "role": "admin",
-    "email": "kimtaicyrus@gmail.com"
+    "email": "admin@gmail.com"
 }
 
 ### Admin Login
 
-POST http://localhost:5000/api/login
+POST http://localhost:8000/api/login
 Content-Type: application/json
 
 {
-    "username": "Johnie",
-    "password": "johnleo2002"
+    "username": "admin",
+    "password": "admin1234"
 }
-
-### Bookings
-
-GET http://localhost:5000/api/bookings
-Authorization: $2b$10$xHJBxvoEqe9AfMDVw1jMje/9vSoVDgyqOGDnVYakq33J9QXMGeAry
-
-POST http://localhost:5000/api/bookings
-Content-Type: application/json
-Authorization: $2b$10$xHJBxvoEqe9AfMDVw1jMje/9vSoVDgyqOGDnVYakq33J9QXMGeAry
-
-PUT http://localhost:5000/api/bookings/1
-Content-Type: application/json
-Authorization: $2b$10$xHJBxvoEqe9AfMDVw1jMje/9vSoVDgyqOGDnVYakq33J9QXMGeAry
-
-DELETE http://localhost:5000/api/bookings/2
-Authorization: $2b$10$xHJBxvoEqe9AfMDVw1jMje/9vSoVDgyqOGDnVYakq33J9QXMGeAry
-
-### Customer Support Tickets
-
-GET http://localhost:5000/api/customerSupportTickets
-Authorization: $2b$10$xHJBxvoEqe9AfMDVw1jMje/9vSoVDgyqOGDnVYakq33J9QXMGeAry
-
-POST http://localhost:5000/api/customerSupportTickets
-Content-Type: application/json
-Authorization: $2b$10$xHJBxvoEqe9AfMDVw1jMje/9vSoVDgyqOGDnVYakq33J9QXMGeAry
-
-PUT http://localhost:5000/api/customerSupportTickets/1
-Content-Type: application/json
-Authorization: $2b$10$xHJBxvoEqe9AfMDVw1jMje/9vSoVDgyqOGDnVYakq33J9QXMGeAry
-
-DELETE http://localhost:5000/api/customerSupportTickets/2
-Authorization: $2b$10$xHJBxvoEqe9AfMDVw1jMje/9vSoVDgyqOGDnVYakq33J9QXMGeAry
-
-### Fleet Management
-
-GET http://localhost:5000/api/fleetManagement
-Authorization: $2b$10$xHJBxvoEqe9AfMDVw1jMje/9vSoVDgyqOGDnVYakq33J9QXMGeAry
-
-POST http://localhost:5000/api/fleetManagement
-Content-Type: application/json
-Authorization: $2b$10$xHJBxvoEqe9AfMDVw1jMje/9vSoVDgyqOGDnVYakq33J9QXMGeAry
-
-PUT http://localhost:5000/api/fleetManagement/1
-Content-Type: application/json
-Authorization: $2b$10$xHJBxvoEqe9AfMDVw1jMje/9vSoVDgyqOGDnVYakq33J9QXMGeAry
-
-DELETE http://localhost:5000/api/fleetManagement/2
-Authorization: $2b$10$xHJBxvoEqe9AfMDVw1jMje/9vSoVDgyqOGDnVYakq33J9QXMGeAry
-
-### Locations
-
-GET http://localhost:5000/api/locations
-Authorization: $2b$10$xHJBxvoEqe9AfMDVw1jMje/9vSoVDgyqOGDnVYakq33J9QXMGeAry
-
-POST http://localhost:5000/api/locations
-Content-Type: application/json
-Authorization: $2b$10$xHJBxvoEqe9AfMDVw1jMje/9vSoVDgyqOGDnVYakq33J9QXMGeAry
-
-PUT http://localhost:5000/api/locations/1
-Content-Type: application/json
-Authorization: $2b$10$xHJBxvoEqe9AfMDVw1jMje/9vSoVDgyqOGDnVYakq33J9QXMGeAry
-
-DELETE http://localhost:5000/api/locations/2
-Authorization: $2b$10$xHJBxvoEqe9AfMDVw1jMje/9vSoVDgyqOGDnVYakq33J9QXMGeAry
-
-### Payments
-
-GET http://localhost:5000/api/payments
-Authorization: $2b$10$xHJBxvoEqe9AfMDVw1jMje/9vSoVDgyqOGDnVYakq33J9QXMGeAry
-
-POST http://localhost:5000/api/payments
-Content-Type: application/json
-Authorization: $2b$10$xHJBxvoEqe9AfMDVw1jMje/9vSoVDgyqOGDnVYakq33J9QXMGeAry
-
-PUT http://localhost:5000/api/payments/1
-Content-Type: application/json
-Authorization: $2b$10$xHJBxvoEqe9AfMDVw1jMje/9vSoVDgyqOGDnVYakq33J9QXMGeAry
-
-DELETE http://localhost:5000/api/payments/2
-Authorization: $2b$10$xHJBxvoEqe9AfMDVw1jMje/9vSoVDgyqOGDnVYakq33J9QXMGeAry
-
-### Users
-
-GET http://localhost:5000/api/users
-Authorization: $2b$10$xHJBxvoEqe9AfMDVw1jMje/9vSoVDgyqOGDnVYakq33J9QXMGeAry
-
-POST http://localhost:5000/api/users
-Content-Type: application/json
-Authorization: $2b$10$xHJBxvoEqe9AfMDVw1jMje/9vSoVDgyqOGDnVYakq33J9QXMGeAry
-
-PUT http://localhost:5000/api/users/1
-Content-Type: application/json
-Authorization: $2b$10$xHJBxvoEqe9AfMDVw1jMje/9vSoVDgyqOGDnVYakq33J9QXMGeAry
-
-DELETE http://localhost:5000/api/users/2
-Authorization: $2b$10$xHJBxvoEqe9AfMDVw1jMje/9vSoVDgyqOGDnVYakq33J9QXMGeAry
-
-### Vehicles
-
-GET http://localhost:5000/api/vehicles
-Authorization: $2b$10$xHJBxvoEqe9AfMDVw1jMje/9vSoVDgyqOGDnVYakq33J9QXMGeAry
-
-POST http://localhost:5000/api/vehicles
-Content-Type: application/json
-Authorization: $2b$10$xHJBxvoEqe9AfMDVw1jMje/9vSoVDgyqOGDnVYakq33J9QXMGeAry
-
-PUT http://localhost:5000/api/vehicles/1
-Content-Type: application/json
-Authorization: $2b$10$xHJBxvoEqe9AfMDVw1jMje/9vSoVDgyqOGDnVYakq33J9QXMGeAry
-
-DELETE http://localhost:5000/api/vehicles/2
-Authorization: $2b$10$xHJBxvoEqe9AfMDVw1jMje/9vSoVDgyqOGDnVYakq33J9QXMGeAry
-
-### Vehicle Specifications
-
-GET http://localhost:5000/api/vehicleSpecifications
-Authorization: $2b$10$xHJBxvoEqe9AfMDVw1jMje/9vSoVDgyqOGDnVYakq33J9QXMGeAry
-
-POST http://localhost:5000/api/vehicleSpecifications
-Content-Type: application/json
-Authorization: $2b$10$xHJBxvoEqe9AfMDVw

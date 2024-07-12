@@ -1,201 +1,137 @@
-import { pgTable, serial, text, varchar, timestamp, pgEnum, boolean, integer, numeric, date } from 'drizzle-orm/pg-core';
-import { relations } from 'drizzle-orm';
+import { pgTable, serial, text, varchar, integer, boolean, date, pgEnum, decimal } from "drizzle-orm/pg-core";
+import { sql } from 'drizzle-orm';
+import { relations } from "drizzle-orm";
 
 // Enums
-const userRoleEnum = pgEnum('user_role', ['user', 'admin']);
+export const roleEnum = pgEnum("role", ["user", "admin"]);
+export const bookingStatusEnum = pgEnum("booking_status", ["Pending", "Confirmed", "Cancelled"]);
+export const paymentStatusEnum = pgEnum("payment_status", ["Pending", "Completed", "Failed"]);
 
-// 1. usersTable Table
-export const usersTable = pgTable('users', {
-  userId: serial('user_id').primaryKey(),
-  fullName: text('full_name').notNull(),
-  email: varchar('email', { length: 255 }).notNull().unique(),
-  contactPhone: varchar('contact_phone', { length: 20 }),
-  address: text('address'),
-  role: userRoleEnum('role').default('user'),
-  createdAt: timestamp('created_at').defaultNow(),
-  updatedAt: timestamp('updated_at').defaultNow(),
+// Users Table
+export const UsersTable = pgTable("users", {
+  user_id: serial("user_id").primaryKey(),
+  full_name: text("full_name").notNull(),
+  email: varchar("email", { length: 100 }).notNull().unique(),
+  contact_phone: varchar("contact_phone", { length: 15 }).notNull(),
+  address: varchar("address", { length: 255 }).notNull(),
+  role: roleEnum("role").default("user"),
+  created_at: date("created_at").default(sql`CURRENT_TIMESTAMP`),
+  updated_at: date("updated_at").default(sql`CURRENT_TIMESTAMP`)
 });
 
-// 2. Vehicle Specifications Table
-export const vehicleSpecificationsTable = pgTable('vehicle_specifications', {
-  vehicleId: serial('vehicle_id').primaryKey(),
-  manufacturer: varchar('manufacturer', { length: 100 }),
-  model: varchar('model', { length: 100 }),
-  year: integer('year'),
-  fuelType: varchar('fuel_type', { length: 50 }),
-  engineCapacity: numeric('engine_capacity'),
-  transmission: varchar('transmission', { length: 50 }),
-  seatingCapacity: integer('seating_capacity'),
-  color: varchar('color', { length: 50 }),
-  features: text('features'),
+// Authentication Table
+export const AuthOnUsersTable = pgTable("auth", {
+  // auth_id: serial("auth_id").primaryKey(),
+  user_id: integer("user_id").references(() => UsersTable.user_id).notNull(),
+  username: varchar("username", { length: 50 }).notNull().unique(),
+  email: varchar("email", { length: 100 }).notNull().unique(), // Add email field
+  role: roleEnum("role").default("user"), // Adding role field
+  password: varchar("password", { length: 255 }).notNull(),
+  created_at: date("created_at").default(sql`CURRENT_TIMESTAMP`),
+  updated_at: date("updated_at").default(sql`CURRENT_TIMESTAMP`)
 });
 
-// 3. VehiclesTable
-export const VehiclesTable = pgTable('vehicles', {
-  vehicleSpecId: serial('vehicle_spec_id').primaryKey(),
-  vehicleId: integer('vehicle_id').references(() => vehicleSpecificationsTable.vehicleId),
-  rentalRate: numeric('rental_rate'),
-  availability: boolean('availability'),
-  createdAt: timestamp('created_at').defaultNow(),
-  updatedAt: timestamp('updated_at').defaultNow(),
+// Vehicles Table
+export const VehiclesTable = pgTable("vehicles", {
+  vehicle_id: serial("vehicle_id").primaryKey(),
+  vehicleSpec_id: integer("vehicleSpec_id").references(() => VehicleSpecificationsTable.vehicle_id),
+  rental_rate: decimal("rental_rate", { precision: 10, scale: 2 }).notNull(),
+  availability: boolean("availability").default(true),
+  created_at: date("created_at").default(sql`CURRENT_TIMESTAMP`),
+  updated_at: date("updated_at").default(sql`CURRENT_TIMESTAMP`)
 });
 
-// 4. Bookings Table
-export const bookingsTable = pgTable('bookings', {
-  bookingId: serial('booking_id').primaryKey(),
-  userId: integer('user_id').references(() => usersTable.userId),
-  vehicleId: integer('vehicle_id').references(() => vehicleSpecificationsTable.vehicleId),
-  locationId: integer('location_id').references(() => locationsTable.locationId),
-  bookingDate: date('booking_date'),
-  returnDate: date('return_date'),
-  totalAmount: numeric('total_amount'),
-  bookingStatus: varchar('booking_status', { length: 20 }).default('Pending'),
-  createdAt: timestamp('created_at').defaultNow(),
-  updatedAt: timestamp('updated_at').defaultNow(),
+// Vehicle Specifications Table
+export const VehicleSpecificationsTable = pgTable("vehicle_specifications", {
+  vehicle_id: serial("vehicle_id").primaryKey(),
+  manufacturer: varchar("manufacturer", { length: 100 }).notNull(),
+  model: varchar("model", { length: 100 }).notNull(),
+  year: integer("year").notNull(),
+  fuel_type: varchar("fuel_type", { length: 50 }).notNull(),
+  engine_capacity: varchar("engine_capacity", { length: 50 }).notNull(),
+  transmission: varchar("transmission", { length: 50 }).notNull(),
+  seating_capacity: integer("seating_capacity").notNull(),
+  color: varchar("color", { length: 50 }).notNull(),
+  features: text("features").notNull()
 });
 
-// 5. Payments Table
-export const paymentsTable = pgTable('payments', {
-  paymentId: serial('payment_id').primaryKey(),
-  bookingId: integer('booking_id').references(() => bookingsTable.bookingId),
-  amount: numeric('amount'),
-  paymentStatus: varchar('payment_status', { length: 20 }).default('Pending'),
-  paymentDate: timestamp('payment_date'),
-  paymentMethod: varchar('payment_method', { length: 50 }),
-  transactionId: varchar('transaction_id', { length: 100 }),
-  createdAt: timestamp('created_at').defaultNow(),
-  updatedAt: timestamp('updated_at').defaultNow(),
+// Bookings Table
+export const BookingsTable = pgTable("bookings", {
+  booking_id: serial("booking_id").primaryKey(),
+  user_id: integer("user_id").references(() => UsersTable.user_id).notNull(),
+  vehicle_id: integer("vehicle_id").references(() => VehiclesTable.vehicle_id).notNull(),
+  location_id: integer("location_id").references(() => LocationsTable.location_id).notNull(),
+  booking_date: date("booking_date").notNull(),
+  return_date: date("return_date").notNull(),
+  total_amount: decimal("total_amount", { precision: 10, scale: 2 }).notNull(),
+  booking_status: bookingStatusEnum("booking_status").default("Pending"),
+  created_at: date("created_at").default(sql`CURRENT_TIMESTAMP`),
+  updated_at: date("updated_at").default(sql`CURRENT_TIMESTAMP`)
 });
 
-// 6. Authentication Table
-export const authenticationTable = pgTable('authentication', {
-  authId: serial('auth_id').primaryKey(),
-  userId: integer('user_id').references(() => usersTable.userId),
-  password: varchar('password', { length: 255 }),
-  createdAt: timestamp('created_at').defaultNow(),
-  updatedAt: timestamp('updated_at').defaultNow(),
+// Payments Table
+export const PaymentsTable = pgTable("payments", {
+  payment_id: serial("payment_id").primaryKey(),
+  booking_id: integer("booking_id").references(() => BookingsTable.booking_id).notNull(),
+  amount: decimal("amount", { precision: 10, scale: 2 }).notNull(),
+  payment_status: paymentStatusEnum("payment_status").default("Pending"),
+  payment_date: date("payment_date").notNull(),
+  payment_method: varchar("payment_method", { length: 50 }).notNull(),
+  transaction_id: varchar("transaction_id", { length: 100 }).notNull(),
+  created_at: date("created_at").default(sql`CURRENT_TIMESTAMP`),
+  updated_at: date("updated_at").default(sql`CURRENT_TIMESTAMP`)
 });
 
-// 7. Customer Support Tickets Table
-export const customerSupportTicketsTable = pgTable('customer_support_tickets', {
-  ticketId: serial('ticket_id').primaryKey(),
-  userId: integer('user_id').references(() => usersTable.userId),
-  subject: varchar('subject', { length: 255 }),
-  description: text('description'),
-  status: varchar('status', { length: 20 }),
-  createdAt: timestamp('created_at').defaultNow(),
-  updatedAt: timestamp('updated_at').defaultNow(),
+// Customer Support Tickets Table
+export const CustomerSupportTicketsTable = pgTable("customer_support_tickets", {
+  ticket_id: serial("ticket_id").primaryKey(),
+  user_id: integer("user_id").references(() => UsersTable.user_id).notNull(),
+  subject: varchar("subject", { length: 100 }).notNull(),
+  description: text("description").notNull(),
+  status: varchar("status", { length: 50 }).notNull(),
+  created_at: date("created_at").default(sql`CURRENT_TIMESTAMP`),
+  updated_at: date("updated_at").default(sql`CURRENT_TIMESTAMP`)
 });
 
-// 8. Locations Table
-export const locationsTable = pgTable('locations', {
-  locationId: serial('location_id').primaryKey(),
-  name: varchar('name', { length: 100 }),
-  address: text('address'),
-  contactPhone: varchar('contact_phone', { length: 20 }),
-  createdAt: timestamp('created_at').defaultNow(),
-  updatedAt: timestamp('updated_at').defaultNow(),
+// Locations Table
+export const LocationsTable = pgTable("locations", {
+  location_id: serial("location_id").primaryKey(),
+  name: varchar("name", { length: 100 }).notNull(),
+  address: varchar("address", { length: 255 }).notNull(),
+  contact_phone: varchar("contact_phone", { length: 15 }).notNull(),
+  created_at: date("created_at").default(sql`CURRENT_TIMESTAMP`),
+  updated_at: date("updated_at").default(sql`CURRENT_TIMESTAMP`)
 });
 
-// 9. Fleet Management Table
-export const fleetManagementTable = pgTable('fleet_management', {
-  fleetId: serial('fleet_id').primaryKey(),
-  vehicleId: integer('vehicle_id').references(() => vehicleSpecificationsTable.vehicleId),
-  acquisitionDate: date('acquisition_date'),
-  depreciationRate: numeric('depreciation_rate'),
-  currentValue: numeric('current_value'),
-  maintenanceCost: numeric('maintenance_cost'),
-  status: varchar('status', { length: 20 }),
-  createdAt: timestamp('created_at').defaultNow(),
-  updatedAt: timestamp('updated_at').defaultNow(),
+// Fleet Management Table
+export const FleetManagementTable = pgTable("fleet_management", {
+  fleet_id: serial("fleet_id").primaryKey(),
+  vehicle_id: integer("vehicle_id").references(() => VehiclesTable.vehicle_id).notNull(),
+  acquisition_date: date("acquisition_date").notNull(),
+  depreciation_rate: decimal("depreciation_rate", { precision: 10, scale: 2 }).notNull(),
+  current_value: decimal("current_value", { precision: 10, scale: 2 }).notNull(),
+  maintenance_cost: decimal("maintenance_cost", { precision: 10, scale: 2 }).notNull(),
+  status: varchar("status", { length: 50 }).notNull(),
+  created_at: date("created_at").default(sql`CURRENT_TIMESTAMP`),
+  updated_at: date("updated_at").default(sql`CURRENT_TIMESTAMP`)
 });
 
-// Relations
-export const usersRelations = relations(usersTable, ({ many, one }) => ({
-  bookings: many(bookingsTable),
-  authentication: one(authenticationTable),
-  supportTickets: many(customerSupportTicketsTable),
-}));
-
-export const vehiclesRelations = relations(VehiclesTable, ({ one }) => ({
-  specification: one(vehicleSpecificationsTable, {
-    fields: [VehiclesTable.vehicleId],
-    references: [vehicleSpecificationsTable.vehicleId],
-  }),
-}));
-
-export const vehicleSpecificationsTableRelations = relations(vehicleSpecificationsTable, ({ many }) => ({
-  bookings: many(bookingsTable),
-  fleetManagement: many(fleetManagementTable),
-}));
-
-export const bookingsRelations = relations(bookingsTable, ({ one, many }) => ({
-  user: one(usersTable, {
-    fields: [bookingsTable.userId],
-    references: [usersTable.userId],
-  }),
-  vehicle: one(vehicleSpecificationsTable, {
-    fields: [bookingsTable.vehicleId],
-    references: [vehicleSpecificationsTable.vehicleId],
-  }),
-  location: one(locationsTable, {
-    fields: [bookingsTable.locationId],
-    references: [locationsTable.locationId],
-  }),
-  payments: many(paymentsTable),
-}));
-
-export const paymentsRelations = relations(paymentsTable, ({ one }) => ({
-  booking: one(bookingsTable, {
-    fields: [paymentsTable.bookingId],
-    references: [bookingsTable.bookingId],
-  }),
-}));
-
-export const authenticationRelations = relations(authenticationTable, ({ one }) => ({
-  user: one(usersTable, {
-    fields: [authenticationTable.userId],
-    references: [usersTable.userId],
-  }),
-}));
-
-export const customerSupportTicketsRelations = relations(customerSupportTicketsTable, ({ one }) => ({
-  user: one(usersTable, {
-    fields: [customerSupportTicketsTable.userId],
-    references: [usersTable.userId],
-  }),
-}));
-
-export const locationsRelations = relations(locationsTable, ({ many }) => ({
-  bookings: many(bookingsTable),
-}));
-
-export const fleetManagementRelations = relations(fleetManagementTable, ({ one }) => ({
-  vehicle: one(vehicleSpecificationsTable, {
-    fields: [fleetManagementTable.vehicleId],
-    references: [vehicleSpecificationsTable.vehicleId],
-  }),
-}));
-
-
-
-
-export type UserInsert = typeof usersTable.$inferInsert;
-export type UserSelect = typeof usersTable.$inferSelect;
-export type VehicleSpecificationInsert = typeof vehicleSpecificationsTable.$inferInsert;
-export type VehicleSpecificationSelect = typeof vehicleSpecificationsTable.$inferSelect;
-export type VehicleInsert = typeof VehiclesTable.$inferInsert;
-export type VehicleSelect = typeof VehiclesTable.$inferSelect;
-export type BookingInsert = typeof bookingsTable.$inferInsert;
-export type BookingSelect = typeof bookingsTable.$inferSelect;
-export type PaymentInsert = typeof paymentsTable.$inferInsert;
-export type PaymentSelect = typeof paymentsTable.$inferSelect;
-export type AuthenticationInsert = typeof authenticationTable.$inferInsert;
-export type AuthenticationSelect = typeof authenticationTable.$inferSelect;
-export type CustomerSupportTicketInsert = typeof customerSupportTicketsTable.$inferInsert;
-export type CustomerSupportTicketSelect = typeof customerSupportTicketsTable.$inferSelect;
-export type LocationInsert = typeof locationsTable.$inferInsert;
-export type LocationSelect = typeof locationsTable.$inferSelect;
-export type FleetManagementInsert = typeof fleetManagementTable.$inferInsert;
-export type FleetManagementSelect = typeof fleetManagementTable.$inferSelect;
-
+// Define the types for insertion and selection
+export type TIUser = typeof UsersTable.$inferInsert;
+export type TSUser = typeof UsersTable.$inferSelect;
+export type TIAuthOnUsers = typeof AuthOnUsersTable.$inferInsert;
+export type TSAuth = typeof AuthOnUsersTable.$inferSelect;
+export type TIVehicle = typeof VehiclesTable.$inferInsert;
+export type TSVehicle = typeof VehiclesTable.$inferSelect;
+export type TIVehicleSpecification = typeof VehicleSpecificationsTable.$inferInsert;
+export type TSVehicleSpecification = typeof VehicleSpecificationsTable.$inferSelect;
+export type TIBooking = typeof BookingsTable.$inferInsert;
+export type TSBooking = typeof BookingsTable.$inferSelect;
+export type TIPayment = typeof PaymentsTable.$inferInsert;
+export type TSPayment = typeof PaymentsTable.$inferSelect;
+export type TICustomerSupportTicket = typeof CustomerSupportTicketsTable.$inferInsert;
+export type TSCustomerSupportTicket = typeof CustomerSupportTicketsTable.$inferSelect;
+export type TILocation = typeof LocationsTable.$inferInsert;
+export type TSLocation = typeof LocationsTable.$inferSelect;
+export type TIFleetManagement = typeof FleetManagementTable.$inferInsert;
+export type TSFleetManagement = typeof FleetManagementTable.$inferSelect;

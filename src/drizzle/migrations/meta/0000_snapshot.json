@@ -1,113 +1,65 @@
 {
-  "id": "684e6b5e-b25f-4b02-b4a3-eff901b9604c",
+  "id": "1d6ab129-765a-4d0d-b5f4-bb9e7cafa29c",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
-    "public.vehicles": {
-      "name": "vehicles",
+    "public.auth": {
+      "name": "auth",
       "schema": "",
       "columns": {
-        "vehicle_spec_id": {
-          "name": "vehicle_spec_id",
-          "type": "serial",
-          "primaryKey": true,
-          "notNull": true
-        },
-        "vehicle_id": {
-          "name": "vehicle_id",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "rental_rate": {
-          "name": "rental_rate",
-          "type": "numeric",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "availability": {
-          "name": "availability",
-          "type": "boolean",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "created_at": {
-          "name": "created_at",
-          "type": "timestamp",
-          "primaryKey": false,
-          "notNull": false,
-          "default": "now()"
-        },
-        "updated_at": {
-          "name": "updated_at",
-          "type": "timestamp",
-          "primaryKey": false,
-          "notNull": false,
-          "default": "now()"
-        }
-      },
-      "indexes": {},
-      "foreignKeys": {
-        "vehicles_vehicle_id_vehicle_specifications_vehicle_id_fk": {
-          "name": "vehicles_vehicle_id_vehicle_specifications_vehicle_id_fk",
-          "tableFrom": "vehicles",
-          "tableTo": "vehicle_specifications",
-          "columnsFrom": [
-            "vehicle_id"
-          ],
-          "columnsTo": [
-            "vehicle_id"
-          ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
-        }
-      },
-      "compositePrimaryKeys": {},
-      "uniqueConstraints": {}
-    },
-    "public.authentication": {
-      "name": "authentication",
-      "schema": "",
-      "columns": {
-        "auth_id": {
-          "name": "auth_id",
-          "type": "serial",
-          "primaryKey": true,
-          "notNull": true
-        },
         "user_id": {
           "name": "user_id",
           "type": "integer",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true
+        },
+        "username": {
+          "name": "username",
+          "type": "varchar(50)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "email": {
+          "name": "email",
+          "type": "varchar(100)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "role": {
+          "name": "role",
+          "type": "role",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "'user'"
         },
         "password": {
           "name": "password",
           "type": "varchar(255)",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true
         },
         "created_at": {
           "name": "created_at",
-          "type": "timestamp",
+          "type": "date",
           "primaryKey": false,
           "notNull": false,
-          "default": "now()"
+          "default": "CURRENT_TIMESTAMP"
         },
         "updated_at": {
           "name": "updated_at",
-          "type": "timestamp",
+          "type": "date",
           "primaryKey": false,
           "notNull": false,
-          "default": "now()"
+          "default": "CURRENT_TIMESTAMP"
         }
       },
       "indexes": {},
       "foreignKeys": {
-        "authentication_user_id_users_user_id_fk": {
-          "name": "authentication_user_id_users_user_id_fk",
-          "tableFrom": "authentication",
+        "auth_user_id_users_user_id_fk": {
+          "name": "auth_user_id_users_user_id_fk",
+          "tableFrom": "auth",
           "tableTo": "users",
           "columnsFrom": [
             "user_id"
@@ -120,7 +72,22 @@
         }
       },
       "compositePrimaryKeys": {},
-      "uniqueConstraints": {}
+      "uniqueConstraints": {
+        "auth_username_unique": {
+          "name": "auth_username_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "username"
+          ]
+        },
+        "auth_email_unique": {
+          "name": "auth_email_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "email"
+          ]
+        }
+      }
     },
     "public.bookings": {
       "name": "bookings",
@@ -136,58 +103,59 @@
           "name": "user_id",
           "type": "integer",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true
         },
         "vehicle_id": {
           "name": "vehicle_id",
           "type": "integer",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true
         },
         "location_id": {
           "name": "location_id",
           "type": "integer",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true
         },
         "booking_date": {
           "name": "booking_date",
           "type": "date",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true
         },
         "return_date": {
           "name": "return_date",
           "type": "date",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true
         },
         "total_amount": {
           "name": "total_amount",
-          "type": "numeric",
+          "type": "numeric(10, 2)",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true
         },
         "booking_status": {
           "name": "booking_status",
-          "type": "varchar(20)",
+          "type": "booking_status",
+          "typeSchema": "public",
           "primaryKey": false,
           "notNull": false,
           "default": "'Pending'"
         },
         "created_at": {
           "name": "created_at",
-          "type": "timestamp",
+          "type": "date",
           "primaryKey": false,
           "notNull": false,
-          "default": "now()"
+          "default": "CURRENT_TIMESTAMP"
         },
         "updated_at": {
           "name": "updated_at",
-          "type": "timestamp",
+          "type": "date",
           "primaryKey": false,
           "notNull": false,
-          "default": "now()"
+          "default": "CURRENT_TIMESTAMP"
         }
       },
       "indexes": {},
@@ -205,10 +173,10 @@
           "onDelete": "no action",
           "onUpdate": "no action"
         },
-        "bookings_vehicle_id_vehicle_specifications_vehicle_id_fk": {
-          "name": "bookings_vehicle_id_vehicle_specifications_vehicle_id_fk",
+        "bookings_vehicle_id_vehicles_vehicle_id_fk": {
+          "name": "bookings_vehicle_id_vehicles_vehicle_id_fk",
           "tableFrom": "bookings",
-          "tableTo": "vehicle_specifications",
+          "tableTo": "vehicles",
           "columnsFrom": [
             "vehicle_id"
           ],
@@ -249,39 +217,39 @@
           "name": "user_id",
           "type": "integer",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true
         },
         "subject": {
           "name": "subject",
-          "type": "varchar(255)",
+          "type": "varchar(100)",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true
         },
         "description": {
           "name": "description",
           "type": "text",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true
         },
         "status": {
           "name": "status",
-          "type": "varchar(20)",
+          "type": "varchar(50)",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true
         },
         "created_at": {
           "name": "created_at",
-          "type": "timestamp",
+          "type": "date",
           "primaryKey": false,
           "notNull": false,
-          "default": "now()"
+          "default": "CURRENT_TIMESTAMP"
         },
         "updated_at": {
           "name": "updated_at",
-          "type": "timestamp",
+          "type": "date",
           "primaryKey": false,
           "notNull": false,
-          "default": "now()"
+          "default": "CURRENT_TIMESTAMP"
         }
       },
       "indexes": {},
@@ -317,59 +285,59 @@
           "name": "vehicle_id",
           "type": "integer",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true
         },
         "acquisition_date": {
           "name": "acquisition_date",
           "type": "date",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true
         },
         "depreciation_rate": {
           "name": "depreciation_rate",
-          "type": "numeric",
+          "type": "numeric(10, 2)",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true
         },
         "current_value": {
           "name": "current_value",
-          "type": "numeric",
+          "type": "numeric(10, 2)",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true
         },
         "maintenance_cost": {
           "name": "maintenance_cost",
-          "type": "numeric",
+          "type": "numeric(10, 2)",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true
         },
         "status": {
           "name": "status",
-          "type": "varchar(20)",
+          "type": "varchar(50)",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true
         },
         "created_at": {
           "name": "created_at",
-          "type": "timestamp",
+          "type": "date",
           "primaryKey": false,
           "notNull": false,
-          "default": "now()"
+          "default": "CURRENT_TIMESTAMP"
         },
         "updated_at": {
           "name": "updated_at",
-          "type": "timestamp",
+          "type": "date",
           "primaryKey": false,
           "notNull": false,
-          "default": "now()"
+          "default": "CURRENT_TIMESTAMP"
         }
       },
       "indexes": {},
       "foreignKeys": {
-        "fleet_management_vehicle_id_vehicle_specifications_vehicle_id_fk": {
-          "name": "fleet_management_vehicle_id_vehicle_specifications_vehicle_id_fk",
+        "fleet_management_vehicle_id_vehicles_vehicle_id_fk": {
+          "name": "fleet_management_vehicle_id_vehicles_vehicle_id_fk",
           "tableFrom": "fleet_management",
-          "tableTo": "vehicle_specifications",
+          "tableTo": "vehicles",
           "columnsFrom": [
             "vehicle_id"
           ],
@@ -397,33 +365,33 @@
           "name": "name",
           "type": "varchar(100)",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true
         },
         "address": {
           "name": "address",
-          "type": "text",
+          "type": "varchar(255)",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true
         },
         "contact_phone": {
           "name": "contact_phone",
-          "type": "varchar(20)",
+          "type": "varchar(15)",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true
         },
         "created_at": {
           "name": "created_at",
-          "type": "timestamp",
+          "type": "date",
           "primaryKey": false,
           "notNull": false,
-          "default": "now()"
+          "default": "CURRENT_TIMESTAMP"
         },
         "updated_at": {
           "name": "updated_at",
-          "type": "timestamp",
+          "type": "date",
           "primaryKey": false,
           "notNull": false,
-          "default": "now()"
+          "default": "CURRENT_TIMESTAMP"
         }
       },
       "indexes": {},
@@ -445,52 +413,53 @@
           "name": "booking_id",
           "type": "integer",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true
         },
         "amount": {
           "name": "amount",
-          "type": "numeric",
+          "type": "numeric(10, 2)",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true
         },
         "payment_status": {
           "name": "payment_status",
-          "type": "varchar(20)",
+          "type": "payment_status",
+          "typeSchema": "public",
           "primaryKey": false,
           "notNull": false,
           "default": "'Pending'"
         },
         "payment_date": {
           "name": "payment_date",
-          "type": "timestamp",
+          "type": "date",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true
         },
         "payment_method": {
           "name": "payment_method",
           "type": "varchar(50)",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true
         },
         "transaction_id": {
           "name": "transaction_id",
           "type": "varchar(100)",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true
         },
         "created_at": {
           "name": "created_at",
-          "type": "timestamp",
+          "type": "date",
           "primaryKey": false,
           "notNull": false,
-          "default": "now()"
+          "default": "CURRENT_TIMESTAMP"
         },
         "updated_at": {
           "name": "updated_at",
-          "type": "timestamp",
+          "type": "date",
           "primaryKey": false,
           "notNull": false,
-          "default": "now()"
+          "default": "CURRENT_TIMESTAMP"
         }
       },
       "indexes": {},
@@ -530,25 +499,25 @@
         },
         "email": {
           "name": "email",
-          "type": "varchar(255)",
+          "type": "varchar(100)",
           "primaryKey": false,
           "notNull": true
         },
         "contact_phone": {
           "name": "contact_phone",
-          "type": "varchar(20)",
+          "type": "varchar(15)",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true
         },
         "address": {
           "name": "address",
-          "type": "text",
+          "type": "varchar(255)",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true
         },
         "role": {
           "name": "role",
-          "type": "user_role",
+          "type": "role",
           "typeSchema": "public",
           "primaryKey": false,
           "notNull": false,
@@ -556,17 +525,17 @@
         },
         "created_at": {
           "name": "created_at",
-          "type": "timestamp",
+          "type": "date",
           "primaryKey": false,
           "notNull": false,
-          "default": "now()"
+          "default": "CURRENT_TIMESTAMP"
         },
         "updated_at": {
           "name": "updated_at",
-          "type": "timestamp",
+          "type": "date",
           "primaryKey": false,
           "notNull": false,
-          "default": "now()"
+          "default": "CURRENT_TIMESTAMP"
         }
       },
       "indexes": {},
@@ -596,64 +565,154 @@
           "name": "manufacturer",
           "type": "varchar(100)",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true
         },
         "model": {
           "name": "model",
           "type": "varchar(100)",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true
         },
         "year": {
           "name": "year",
           "type": "integer",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true
         },
         "fuel_type": {
           "name": "fuel_type",
           "type": "varchar(50)",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true
         },
         "engine_capacity": {
           "name": "engine_capacity",
-          "type": "numeric",
+          "type": "varchar(50)",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true
         },
         "transmission": {
           "name": "transmission",
           "type": "varchar(50)",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true
         },
         "seating_capacity": {
           "name": "seating_capacity",
           "type": "integer",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true
         },
         "color": {
           "name": "color",
           "type": "varchar(50)",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true
         },
         "features": {
           "name": "features",
           "type": "text",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true
         }
       },
       "indexes": {},
       "foreignKeys": {},
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
+    },
+    "public.vehicles": {
+      "name": "vehicles",
+      "schema": "",
+      "columns": {
+        "vehicle_id": {
+          "name": "vehicle_id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "vehicleSpec_id": {
+          "name": "vehicleSpec_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "rental_rate": {
+          "name": "rental_rate",
+          "type": "numeric(10, 2)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "availability": {
+          "name": "availability",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false,
+          "default": true
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "date",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "CURRENT_TIMESTAMP"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "date",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "CURRENT_TIMESTAMP"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "vehicles_vehicleSpec_id_vehicle_specifications_vehicle_id_fk": {
+          "name": "vehicles_vehicleSpec_id_vehicle_specifications_vehicle_id_fk",
+          "tableFrom": "vehicles",
+          "tableTo": "vehicle_specifications",
+          "columnsFrom": [
+            "vehicleSpec_id"
+          ],
+          "columnsTo": [
+            "vehicle_id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
     }
   },
-  "enums": {},
+  "enums": {
+    "public.booking_status": {
+      "name": "booking_status",
+      "schema": "public",
+      "values": [
+        "Pending",
+        "Confirmed",
+        "Cancelled"
+      ]
+    },
+    "public.payment_status": {
+      "name": "payment_status",
+      "schema": "public",
+      "values": [
+        "Pending",
+        "Completed",
+        "Failed"
+      ]
+    },
+    "public.role": {
+      "name": "role",
+      "schema": "public",
+      "values": [
+        "user",
+        "admin"
+      ]
+    }
+  },
   "schemas": {},
   "_meta": {
     "columns": {},

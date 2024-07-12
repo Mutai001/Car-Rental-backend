@@ -23,6 +23,7 @@
         "nodemailer": "^6.9.13",
         "pg": "^8.12.0",
         "prom-client": "^15.1.2",
+        "stripe": "^16.1.0",
         "zod": "^3.23.8"
     },
     "devDependencies": {
@@ -33,6 +34,7 @@
         "@types/nodemailer": "^6.4.15",
         "@types/pg": "^8.11.6",
         "drizzle-kit": "^0.22.2",
+        "eslint": "^9.6.0",
         "tsx": "^4.7.1"
     }
 }

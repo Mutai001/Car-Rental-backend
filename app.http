@@ -10,18 +10,19 @@ GET http://localhost:8000/api/timeout
 //fetch all users
 ###
 GET  http://localhost:8000/api/users
-Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjo1LCJ1c2VybmFtZSI6IkN5cnVzIiwicm9sZSI6ImFkbWluIiwiaWF0IjoxNzIwNzIzNDE4LCJleHAiOjE3MjA3MjcwMTh9.YZuzWw-7m5mSYKJ4xiwIy0-GYr731TXNOOS_Zx0mfQ4
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjo5NSwidXNlcm5hbWUiOiJBbW9vIiwicm9sZSI6InVzZXIiLCJpYXQiOjE3MjA3ODk4NjksImV4cCI6MTcyMDc5MzQ2OX0.uaVzTPeUyMeQc5bXUAmWNL4n6trWD78rR0hU_52Jz5c
 
 
 //fetching one user
 ###
 GET  http://localhost:8000/api/users/3
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjo5NSwidXNlcm5hbWUiOiJBbW9vIiwicm9sZSI6InVzZXIiLCJpYXQiOjE3MjA3ODk4NjksImV4cCI6MTcyMDc5MzQ2OX0.uaVzTPeUyMeQc5bXUAmWNL4n6trWD78rR0hU_52Jz5c
 
 
 
 //updaing a user
 ###
-PUT   http://localhost:5000/api/users/3
+PUT   http://localhost:8000/api/users/3
 Content-Type: application/json
 
 {
@@ -31,19 +32,19 @@ Content-Type: application/json
 
 
 ###
-POST http://localhost:5000/api/users
-Content-Length: application/json
+POST http://localhost:8000/api/users
+Content-Type: application/json
 
-{
-    "userId": 12,
-  "fullName": "Lyn Dave",
+{   
+    
+"full_name": "Lyn Dave",
   "email": "Lyne@example.com",
-  "contactPhone": "(157) 459-7890",
+  "contact_phone": "(157) 459-7890",
   "address": "100 Main Street, Nax, CA 12945",
   "role": "user",
-"password": "annn34884",
-  "createdAt": "2024-07-09",
-  "updatedAt": "2024-07-01"
+  "password": "admin34884",
+    "created_at": "2024-07-04 ",
+    "updated_at": "2024-07-04"
 }
 
 //Deleting a user
@@ -70,7 +71,17 @@ Content-Type: application/json
 
 {
   
-    "bookingStatus": "completed"
+  "booking_id": 9,
+  "user_id": 1,
+  "vehicle_id": 1,
+  "location_id": 1,
+  "booking_date": "2024-07-15",
+  "return_date": "2024-07-20",
+  "total_amount": "200.00",
+  "booking_status": "Pending",
+  "created_at": "2024-07-04 12:36:13.384034",
+  "updated_at": "2024-07-04 12:36:13.384034"
+  
 }
 
 
@@ -86,7 +97,7 @@ Content-Type: application/json
 
 
 ###
-DELETE http://localhost:5000/api/bookings/2
+DELETE http://localhost:5000/api/bookings/9
 
 
 
@@ -107,7 +118,7 @@ PUT http://localhost:8000/api/customer-support-tickets/1
 
 
 ###
-DELETE http://localhost:8000/api/customerSupportTickets/2
+DELETE http://localhost:8000/api/customer-support-tickets/2
 
 
 
@@ -119,12 +130,23 @@ GET http://localhost:8000/api/fleet-management
 
 ###
 POST http://localhost:8000/api/fleet-management
+Content-Type: application/application/json
 
+{
+    "vehicle_id": 1,
+    "acquisition_date": "2022-01-01",
+    "depreciation_rate": "0.10",
+    "current_value": "18000.00",
+    "maintenance_cost": "1500.00",
+    "status": "Active",
+     "created_at": "2024-07-04 12:40:01.461811",
+    "updated_at": "2024-07-04 12:40:01.461811"
+}
 
 
 
 ###
-DELETE http://localhost:8000/api/fleet-management/2
+DELETE http://localhost:8000/api/fleet-management/1
 
 
 
@@ -174,10 +196,17 @@ GET http://localhost:8000/api/payments/1
 
 
 ###
-PUT http://localhost:5000/api/payments/1
+POST http://localhost:5000/api/payments
 Content-Type: application/json
-{
 
+{
+    "booking_id": 10,
+    "booking_id": 4,
+    "amount": "220.00",
+    "payment_status": "Pending",
+    "payment_date": 2024-07-04,
+    "payment_method": "Credit Card",
+    "transaction_id": 10
 
 }
 
@@ -186,22 +215,6 @@ DELETE http://localhost:8000/api/payments/2
 
 
 
-### Users
-
-GET http://localhost:8000/api/users
-
-
-###
-POST http://localhost:8000/api/users
-
-
-###
-PUT http://localhost:8000/api/users/1
-
-
-###
-DELETE http://localhost:8000/api/users/2
-Authorization: $2b$10$xHJBxvoEqe9AfMDVw1jMje/9vSoVDgyqOGDnVYakq33J9QXMGeAry
 
 # Vehicles
 ### 
@@ -225,7 +238,7 @@ DELETE http://localhost:8000/api/vehicles/2
 ### Vehicle Specifications
 
 GET http://localhost:8000/api/vehicle-specifications
-
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjo5NSwidXNlcm5hbWUiOiJBbW9vIiwicm9sZSI6InVzZXIiLCJpYXQiOjE3MjA3OTA3NTcsImV4cCI6MTcyMDc5NDM1N30.92Ft44wTKki5zEEKZvhVJL_JmdINRUbvyu-B7whl-38
 
 ###
 POST http://localhost:8000/api/vehicle-specifications
@@ -233,23 +246,7 @@ POST http://localhost:8000/api/vehicle-specifications
 
 
 
-### Authentication
-POST http://localhost:5000/api/signup
-Content-Type: application/json
 
-{ 
-
-}
-
-### Login
-
-POST http://localhost:5000/api/login
-Content-Type: application/json
-
-{
-    "username": "Cyrus",
-    "password": "$2b$10$.vsXpC9Rk/6ehdLXyqBOZe4VCSE51Yaglj2G1qy.s2xoxDdtmixYa"
-}
 
 ### Admin Registration
 
@@ -257,11 +254,13 @@ POST http://localhost:8000/api/signup
 Content-Type: application/json
 
 {
-    "userId": 6,
-    "password": "admin1234",
-    "username": "admin",
-    "role": "admin",
-    "email": "admin@gmail.com"
+    "full_name": "amos amoo",
+     "email": "amoo@gmail.com",  
+    "contact_phone": "(123) 451-7090",
+    "address": "123 Main Street, Anytoa, CA 12345",
+     "username": "Amoo",
+    "password": "Amoo1234",
+    "role": "admin"
 }
 
 ### Admin Login
@@ -270,6 +269,6 @@ POST http://localhost:8000/api/login
 Content-Type: application/json
 
 {
-    "username": "admin",
-    "password": "admin1234"
+    "username": "Amoo",
+    "password": "Amoo1234"
 }

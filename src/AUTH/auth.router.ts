@@ -2,6 +2,7 @@ import { Hono } from 'hono';
 import { signup, loginUser } from './auth.controller';
 import { zValidator } from '@hono/zod-validator';
 import { authSchema } from '../validator'; // Assuming you have a validation schema
+import { adminRoleAuth,userRoleAuth,bothRoleAuth } from '../middlewares/auth.middlewares';
 
 export const authRouter = new Hono();
 

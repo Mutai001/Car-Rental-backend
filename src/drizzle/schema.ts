@@ -31,19 +31,9 @@ export const AuthOnUsersTable = pgTable("auth", {
   updated_at: date("updated_at").default(sql`CURRENT_TIMESTAMP`)
 });
 
-// Vehicles Table
-export const VehiclesTable = pgTable("vehicles", {
-  vehicle_id: serial("vehicle_id").primaryKey(),
-  vehicleSpec_id: integer("vehicleSpec_id").references(() => VehicleSpecificationsTable.vehicle_id),
-  rental_rate: decimal("rental_rate", { precision: 10, scale: 2 }).notNull(),
-  availability: boolean("availability").default(true),
-  created_at: date("created_at").default(sql`CURRENT_TIMESTAMP`),
-  updated_at: date("updated_at").default(sql`CURRENT_TIMESTAMP`)
-});
-
 // Vehicle Specifications Table
 export const VehicleSpecificationsTable = pgTable("vehicle_specifications", {
-  vehicle_id: serial("vehicle_id").primaryKey(),
+  vehicleSpec_id: serial("vehicleSpec_id").primaryKey(),  // Primary key column
   manufacturer: varchar("manufacturer", { length: 100 }).notNull(),
   model: varchar("model", { length: 100 }).notNull(),
   year: integer("year").notNull(),
@@ -53,6 +43,16 @@ export const VehicleSpecificationsTable = pgTable("vehicle_specifications", {
   seating_capacity: integer("seating_capacity").notNull(),
   color: varchar("color", { length: 50 }).notNull(),
   features: text("features").notNull()
+});
+
+// Vehicles Table
+export const VehiclesTable = pgTable("vehicles", {
+  vehicle_id: serial("vehicle_id").primaryKey(),
+  vehicleSpec_id: integer("vehicleSpec_id").references(() => VehicleSpecificationsTable.vehicleSpec_id),  // Reference the correct primary key column
+  rental_rate: decimal("rental_rate", { precision: 10, scale: 2 }).notNull(),
+  availability: boolean("availability").default(true),
+  created_at: date("created_at").default(sql`CURRENT_TIMESTAMP`),
+  updated_at: date("updated_at").default(sql`CURRENT_TIMESTAMP`)
 });
 
 // Bookings Table

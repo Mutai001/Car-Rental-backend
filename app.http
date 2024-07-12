@@ -55,41 +55,33 @@ DELETE http://localhost:5000/api/users/5
 
 ### Bookings
 //fetch all bookings
-GET http://localhost:5000/api/bookings
+GET http://localhost:8000/api/bookings
 
 
 
 //fetching one booking
 ###
-GET  http://localhost:5000/api/bookings/9
+GET  http://localhost:8000/api/bookings/9
 
 
 ###
-POST http://localhost:5000/api/bookings/11
-Content-Type: application/json 
+POST http://localhost:8000/api/bookings/9
+Content-Type: application/json
 
 {
-
-    "bookingStatus": "Confirmed"
-
+  
+    "bookingStatus": "completed"
 }
 
 
 ###
-PUT http://localhost:5000/api/bookings/1
+PUT http://localhost:8000/api/bookings/9
 Content-Type: application/json
 
 {
-    "bookingId": 21,
-    "userId": 4,
-    "vehicleId": 1,
-    "locationId": 3,
-    "bookingDate": "2024-07-21",
-    "returnDate": "2024-07-29",
-    "totalAmount": "280.00",
-    "bookingStatus": "Pending",
-    "createdAt": "2024-07-02 12:36:13.384034",
-    "updatedAt": "2024-07-02 12:36:13.384034"
+   
+    "bookingStatus": "Pending"
+    
 }
 
 
@@ -227,22 +219,22 @@ Connection:
 
 
 ###
-DELETE http://localhost:5000/api/vehicles/2
+DELETE http://localhost:8000/api/vehicles/2
 
 
 ### Vehicle Specifications
 
-GET http://localhost:5000/api/vehicleSpecifications
+GET http://localhost:8000/api/vehicle-specifications
 
 
 ###
-POST http://localhost:5000/api/vehicleSpecifications
+POST http://localhost:8000/api/vehicle-specifications
 
 
 
 
 ### Authentication
-POST http://localhost:5000/api/register
+POST http://localhost:5000/api/signup
 Content-Type: application/json
 
 { 

@@ -8,6 +8,13 @@
       "when": 1719925351994,
       "tag": "0000_rainy_vulcan",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1720787089935,
+      "tag": "0001_fancy_virginia_dare",
+      "breakpoints": true
     }
   ]
 }

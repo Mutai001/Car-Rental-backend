@@ -21,7 +21,6 @@ export const UsersTable = pgTable("users", {
 
 // Authentication Table
 export const AuthOnUsersTable = pgTable("auth", {
-  // auth_id: serial("auth_id").primaryKey(),
   user_id: integer("user_id").references(() => UsersTable.user_id).notNull(),
   username: varchar("username", { length: 50 }).notNull().unique(),
   email: varchar("email", { length: 100 }).notNull().unique(), // Add email field

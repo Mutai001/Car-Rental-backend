@@ -236,6 +236,8 @@ DELETE http://localhost:8000/api/vehicles/2
 
 
 ### Vehicle Specifications
+GET  http://localhost:8000/api/vehicle-specifications
+
 
 GET http://localhost:8000/api/vehicle-specifications
 Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjo5NSwidXNlcm5hbWUiOiJBbW9vIiwicm9sZSI6InVzZXIiLCJpYXQiOjE3MjA3OTA3NTcsImV4cCI6MTcyMDc5NDM1N30.92Ft44wTKki5zEEKZvhVJL_JmdINRUbvyu-B7whl-38
@@ -254,8 +256,9 @@ POST http://localhost:8000/api/signup
 Content-Type: application/json
 
 {
+    "user_id": 5,
     "full_name": "amos amoo",
-     "email": "amoo@gmail.com",  
+    "email": "amoo@gmail.com",  
     "contact_phone": "(123) 451-7090",
     "address": "123 Main Street, Anytoa, CA 12345",
      "username": "Amoo",

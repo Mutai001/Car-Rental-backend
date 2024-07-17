@@ -1,4 +1,4 @@
-import { pgTable, serial, text, varchar, integer, boolean, date, pgEnum, decimal } from "drizzle-orm/pg-core";
+import { pgTable, serial, text, varchar, integer, boolean, date, pgEnum, decimal,timestamp } from "drizzle-orm/pg-core";
 import { sql } from 'drizzle-orm';
 import { relations } from "drizzle-orm";
 
@@ -30,30 +30,33 @@ export const AuthOnUsersTable = pgTable("auth", {
   created_at: date("created_at").default(sql`CURRENT_TIMESTAMP`),
   updated_at: date("updated_at").default(sql`CURRENT_TIMESTAMP`)
 });
-
-// Vehicle Specifications Table
-export const VehicleSpecificationsTable = pgTable("vehicle_specifications", {
-  vehicleSpec_id: serial("vehicleSpec_id").primaryKey(),  // Primary key column
-  manufacturer: varchar("manufacturer", { length: 100 }).notNull(),
-  model: varchar("model", { length: 100 }).notNull(),
-  year: integer("year").notNull(),
-  fuel_type: varchar("fuel_type", { length: 50 }).notNull(),
-  engine_capacity: varchar("engine_capacity", { length: 50 }).notNull(),
-  transmission: varchar("transmission", { length: 50 }).notNull(),
-  seating_capacity: integer("seating_capacity").notNull(),
-  color: varchar("color", { length: 50 }).notNull(),
-  features: text("features").notNull()
+export const VehicleSpecificationsTable = pgTable('vehicle_specifications', {
+  vehicle_id: serial('vehicle_id').primaryKey(),
+  manufacturer: varchar('manufacturer', { length: 255 }).notNull(),
+  model: varchar('model', { length: 255 }).notNull(),
+  year: integer('year').notNull(),
+  fuel_type: varchar('fuel_type', { length: 50 }).notNull(),
+  engine_capacity: varchar('engine_capacity', { length: 50 }),
+  transmission: varchar('transmission', { length: 50 }),
+  seating_capacity: integer('seating_capacity'),
+  color: varchar('color', { length: 50 }),
+  features: text('features'),
+  created_at: timestamp('created_at').defaultNow(),
+  updated_at: timestamp('updated_at').defaultNow(),
 });
+
 
 // Vehicles Table
-export const VehiclesTable = pgTable("vehicles", {
-  vehicle_id: serial("vehicle_id").primaryKey(),
-  vehicleSpec_id: integer("vehicleSpec_id").references(() => VehicleSpecificationsTable.vehicleSpec_id),  // Reference the correct primary key column
-  rental_rate: decimal("rental_rate", { precision: 10, scale: 2 }).notNull(),
-  availability: boolean("availability").default(true),
-  created_at: date("created_at").default(sql`CURRENT_TIMESTAMP`),
-  updated_at: date("updated_at").default(sql`CURRENT_TIMESTAMP`)
+export const VehiclesTable = pgTable('vehicles', {
+  vehicle_id: serial('vehicle_id').primaryKey(),
+  vehicleSpec_id: integer('vehicleSpec_id').references(() => VehicleSpecificationsTable.vehicle_id, { onDelete: 'cascade' }),
+  rental_rate: decimal('rental_rate').notNull(),
+  availability: boolean('availability').default(true),
+  vehicle_image: varchar('vehicle_image', { length: 255 }),
+  created_at: timestamp('created_at').defaultNow(),
+  updated_at: timestamp('updated_at').defaultNow(),
 });
+
 
 // Bookings Table
 export const BookingsTable = pgTable("bookings", {
@@ -115,6 +118,96 @@ export const FleetManagementTable = pgTable("fleet_management", {
   created_at: date("created_at").default(sql`CURRENT_TIMESTAMP`),
   updated_at: date("updated_at").default(sql`CURRENT_TIMESTAMP`)
 });
+
+
+
+
+
+export const userAuthRelations = relations(UsersTable, ({ one }) => ({
+  auth: one(AuthOnUsersTable, {
+      fields: [UsersTable.user_id],
+      references: [AuthOnUsersTable.user_id]
+  })
+}));
+
+export const authRelations = relations(AuthOnUsersTable, ({ one }) => ({
+  user: one(UsersTable, {
+      fields: [AuthOnUsersTable.user_id],
+      references: [UsersTable.user_id]
+  })
+}));
+
+export const userBookingsRelations = relations(UsersTable, ({ many }) => ({
+  bookings: many(BookingsTable),
+  supportTickets: many(CustomerSupportTicketsTable),
+}));
+
+export const vehicleSpecRelations = relations(VehicleSpecificationsTable, ({ one, many }) => ({
+  vehicles: many(VehiclesTable),
+  fleet: one(FleetManagementTable, {
+      fields: [VehicleSpecificationsTable.vehicle_id],
+      references: [FleetManagementTable.vehicle_id]
+  })
+}));
+
+export const vehicleRelations = relations(VehiclesTable, ({ one }) => ({
+  vehicleSpec: one(VehicleSpecificationsTable, {
+      fields: [VehiclesTable.vehicle_id],
+      references: [VehicleSpecificationsTable.vehicle_id]
+  }),
+  bookings: one(BookingsTable, {
+      fields: [VehiclesTable.vehicleSpec_id],
+      references: [BookingsTable.vehicle_id]
+  })
+}));
+
+export const bookingRelations = relations(BookingsTable, ({ one }) => ({
+  user: one(UsersTable, {
+      fields: [BookingsTable.user_id],
+      references: [UsersTable.user_id]
+  }),
+  vehicle: one(VehiclesTable, {
+      fields: [BookingsTable.vehicle_id],
+      references: [VehiclesTable.vehicle_id]
+  }),
+  location: one(LocationsTable, {
+      fields: [BookingsTable.location_id],
+      references: [LocationsTable.location_id]
+  }),
+  payments: one(PaymentsTable, {
+      fields: [BookingsTable.booking_id],
+      references: [PaymentsTable.booking_id]
+  })
+}));
+
+export const paymentRelations = relations(PaymentsTable, ({ one }) => ({
+  booking: one(BookingsTable, {
+      fields: [PaymentsTable.booking_id],
+      references: [BookingsTable.booking_id]
+  })
+}));
+
+export const customerSupportRelations = relations(CustomerSupportTicketsTable, ({ one }) => ({
+  user: one(UsersTable, {
+      fields: [CustomerSupportTicketsTable.user_id],
+      references: [UsersTable.user_id]
+  })
+}));
+
+export const locationRelations = relations(LocationsTable, ({ many }) => ({
+  bookings: many(BookingsTable)
+}));
+
+export const fleetRelations = relations(FleetManagementTable, ({ one }) => ({
+  vehicleSpec: one(VehicleSpecificationsTable, {
+      fields: [FleetManagementTable.vehicle_id],
+      references: [VehicleSpecificationsTable.vehicle_id]
+  })
+}));
+
+
+
+
 
 // Define the types for insertion and selection
 export type TIUser = typeof UsersTable.$inferInsert;

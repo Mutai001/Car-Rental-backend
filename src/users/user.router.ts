@@ -9,7 +9,7 @@ export const userRouter = new Hono();
 
 // GET ALL USERS - accessible by users and admins
 userRouter
-    .get("users",  adminRoleAuth, getUsersController)
+    .get("users",   getUsersController)
     .post("users",/* adminRoleAuth,*/ zValidator('json', userSchema, (result, c) => {
         if (!result.success) {
             return c.json(result.error, 400);
@@ -18,8 +18,8 @@ userRouter
 
 // GET USER BY ID - accessible by both users and admins
 userRouter
-    .get("users/:id", bothRoleAuth, getUserByIdController)
-    .put("users/:id", adminRoleAuth, zValidator('json', userSchema, (result, c) => {
+    .get("users/:id",  getUserByIdController)
+    .put("users/:id",  zValidator('json', userSchema, (result, c) => {
         if (!result.success) {
             return c.json(result.error, 400);
         }

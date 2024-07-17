@@ -1,8 +1,8 @@
 import { Hono } from "hono";
 import "dotenv/config";
 import { serve } from '@hono/node-server';
-import { vehicleRouter } from './Vehicles/vehicle.router'; 
-import {userRouter}  from './Users/User.Router'
+import { vehicleRouter } from './vehicles/vehicle.router'; 
+import {userRouter}  from './users/user.router'
 import {bookingRouter} from './Booking/Booking.Router'
 import {vehicleSpecificationRouter} from './Vehiclespecification/Vehiclespecication.Router'
 import {authRouter} from './AUTH/auth.router'

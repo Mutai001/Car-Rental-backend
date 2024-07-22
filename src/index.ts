@@ -11,8 +11,35 @@ import customerSupportTicketsRouter from "./customersupportTicket/support.Router
 import fleetManagementRouter from "./FleetManagement/Fmanagement.Router";
 import locationRouter from "./Location/Location.Router";
 import { cors } from 'hono/cors';
+// import stripe from './Booking/stripe.service';
+// import { Request } from 'hono';
+// import { Response } from 'express';
+// import { stripePaymentHandler } from './Booking/stripe.service';
+import Stripe from 'stripe';
+import { stripeSecretKey } from './stripeConfig';
+import * as bodyParser from 'hono';
 
 const app = new Hono().basePath("/api");
+
+// app.use(bodyParser.json());
+
+// app.post('/api/payments', async (req: Request, res: Response) => {
+//   try {
+//     const { amount, currency, source, description } = req.body;
+
+//     const paymentIntent = await stripe.paymentIntents.create({
+//       amount,
+//       currency,
+//       payment_method: source,
+//       confirm: true,
+//       description,
+//     });
+
+//     res.status(200).json({ success: true, paymentIntent });
+//   } catch (error) {
+//     res.status(401).json({ success: false, message: 'Invalid key', error: (error as Error).message });
+//   }
+// });
 
 
 

@@ -1,111 +1,92 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteBookingController = exports.updateBookingController = exports.createBookingController = exports.getBookingByIdController = exports.getAllBookingsController = void 0;
+exports.deleteBookingsData = exports.updateBookingsData = exports.createBookingsData = exports.getOneBookingsData = exports.getAllBookingsData = void 0;
 const Booking_Service_1 = require("./Booking.Service");
-const TransactionService_1 = require("./TransactionService");
-const VehicleAvailabilityService_1 = require("./VehicleAvailabilityService");
-const BookingValidation_1 = require("./BookingValidation");
+const Booking_Service_2 = require("./Booking.Service");
 // Get all bookings
-const getAllBookingsController = async (c) => {
+const getAllBookingsData = async (c) => {
     try {
-        const bookings = await (0, Booking_Service_1.getAllBookingsService)();
-        if (!bookings || bookings.length === 0) {
-            return c.text('No bookings found', 404);
+        //limit the number of bookings to be returned
+        const limit = Number(c.req.query('limit'));
+        const data = await (0, Booking_Service_1.getAllBookings)(limit);
+        if (data == null || data.length == 0) {
+            return c.text("bookings not found", 404);
         }
-        return c.json(bookings, 200);
+        return c.json(data, 200);
     }
     catch (error) {
-        return c.json({ error: error?.message }, 500);
+        return c.json({ error: error?.message }, 400);
     }
 };
-exports.getAllBookingsController = getAllBookingsController;
-// Get booking by ID
-const getBookingByIdController = async (c) => {
+exports.getAllBookingsData = getAllBookingsData;
+// fetch one bookings
+const getOneBookingsData = async (c) => {
+    const id = c.req.param("id");
+    const bookings = await (0, Booking_Service_2.fetchOneBookings)(parseInt(id));
+    if (bookings === undefined) {
+        return c.json({ message: "No bookings found" }, 404);
+    }
+    return c.json(bookings, 200);
+};
+exports.getOneBookingsData = getOneBookingsData;
+//create bookings
+const createBookingsData = async (c, next) => {
     try {
-        const id = parseInt(c.req.param('id'));
-        if (isNaN(id)) {
-            return c.text('Invalid id', 400);
-        }
-        const booking = await (0, Booking_Service_1.getBookingByIdService)(id);
-        if (!booking) {
-            return c.text('Booking not found', 404);
-        }
-        return c.json(booking, 200);
+        const bookings = await c.req.json();
+        const response = await (0, Booking_Service_2.CreateBookings)(bookings);
+        return c.json({ message: response }, 201);
+    }
+    catch (err) {
+        return c.json({ message: err }, 500);
+    }
+};
+exports.createBookingsData = createBookingsData;
+//update bookings
+const updateBookingsData = async (c) => {
+    const id = parseInt(c.req.param("id"));
+    if (isNaN(id))
+        return c.text("Invalid ID", 400);
+    const Bookings = await c.req.json();
+    try {
+        // search for the bookings
+        const searchedBookings = await (0, Booking_Service_1.getAllBookings)(id);
+        if (searchedBookings == undefined)
+            return c.text("bookings not found", 404);
+        // get the data and update it
+        const res = await (0, Booking_Service_2.UpdateBookings)(id, Bookings);
+        // return a success message
+        if (!res)
+            return c.text("bookings not updated", 404);
+        return c.json({ msg: res }, 201);
     }
     catch (error) {
-        return c.json({ error: error?.message }, 500);
+        return c.json({ error: error?.message }, 400);
     }
 };
-exports.getBookingByIdController = getBookingByIdController;
-const createBookingController = async (c) => {
+exports.updateBookingsData = updateBookingsData;
+//delete bookings
+// export const deleteBookingsData = async (c: Context) => {
+//     const id = c.req.param("id")   
+//     const response = await DeleteBookings(parseInt(id))
+//     return c.json({message: response},200)
+// }
+const deleteBookingsData = async (c) => {
+    const id = Number(c.req.param("id"));
+    if (isNaN(id))
+        return c.text("Invalid ID", 400);
     try {
-        const booking = await c.req.json();
-        console.log("Creating Booking");
-        // Step 1: Validate Booking
-        console.log("Proceeding to validate booking...");
-        const validation = await (0, BookingValidation_1.validateBooking)(booking);
-        if (!validation.valid) {
-            console.log("Booking validation failed:", validation.message);
-            return c.text(validation.message, 400);
-        }
-        // Step 2: Check Vehicle Availability
-        console.log("Proceeding to check vehicle availability...");
-        const isAvailable = await (0, VehicleAvailabilityService_1.checkVehicleAvailability)(booking.vehicle_id, booking.booking_date, booking.return_date);
-        if (!isAvailable) {
-            console.log("Vehicle is not available for the selected dates.");
-            return c.text('Vehicle is not available for the selected dates', 400);
-        }
-        // Step 3: Manage Booking Transaction (includes booking creation and payment processing)
-        console.log("Booking validated. Proceeding to manage booking transaction...");
-        const transactionResult = await (0, TransactionService_1.manageBookingTransaction)(booking);
-        if (!transactionResult.success) {
-            console.error("Booking failed due to payment processing failure:", transactionResult.message);
-            return c.text(transactionResult.message, 400);
-        }
-        // Final response
-        console.log("Booking and payment processed successfully.");
-        return c.json({ message: 'Booking created and payment processed successfully' }, 201);
+        //search for the Booking
+        const Booking = await (0, Booking_Service_2.DeleteBookings)(id);
+        if (Booking == undefined)
+            return c.text("Booking not found", 404);
+        //deleting the Booking
+        const res = await (0, Booking_Service_2.DeleteBookings)(id);
+        if (!res)
+            return c.text("Booking not deleted", 404);
+        return c.json({ msg: res }, 201);
     }
     catch (error) {
-        console.error("Error creating booking:", error.message || error);
-        return c.json({ error: error?.message }, 500);
+        return c.json({ error: error?.message }, 400);
     }
 };
-exports.createBookingController = createBookingController;
-// Update booking
-const updateBookingController = async (c) => {
-    try {
-        const id = parseInt(c.req.param('id'));
-        if (isNaN(id)) {
-            return c.text('Invalid id', 400);
-        }
-        const booking = await c.req.json();
-        const updatedBooking = await (0, Booking_Service_1.updateBookingService)(id, booking);
-        if (!updatedBooking) {
-            return c.text('Booking not updated', 400);
-        }
-        return c.json({ message: 'Booking updated successfully' }, 200);
-    }
-    catch (error) {
-        return c.json({ error: error?.message }, 500);
-    }
-};
-exports.updateBookingController = updateBookingController;
-// Delete booking
-const deleteBookingController = async (c) => {
-    try {
-        const id = parseInt(c.req.param('id'));
-        if (isNaN(id)) {
-            return c.text('Invalid id', 400);
-        }
-        const deletedBooking = await (0, Booking_Service_1.deleteBookingService)(id);
-        if (!deletedBooking) {
-            return c.text('Booking not deleted', 400);
-        }
-        return c.json({ message: 'Booking deleted successfully' }, 200);
-    }
-    catch (error) {
-        return c.json({ error: error?.message }, 500);
-    }
-};
-exports.deleteBookingController = deleteBookingController;
+exports.deleteBookingsData = deleteBookingsData;

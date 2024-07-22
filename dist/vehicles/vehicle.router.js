@@ -3,6 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.vehicleRouter = void 0;
 const hono_1 = require("hono");
 const vehicles_controller_1 = require("./vehicles.controller");
+// import { adminRoleAuth, bothRoleAuth } from '../middlewares/auth.middlewares';
 exports.vehicleRouter = new hono_1.Hono();
 exports.vehicleRouter
     .get("vehicles", vehicles_controller_1.getAllVehiclesController)

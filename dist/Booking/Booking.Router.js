@@ -5,9 +5,9 @@ const hono_1 = require("hono");
 const Booking_controller_1 = require("./Booking.controller");
 exports.bookingRouter = new hono_1.Hono();
 exports.bookingRouter
-    .get("bookings", Booking_controller_1.getAllBookingsController)
-    .get("bookings/:id", Booking_controller_1.getBookingByIdController)
-    .post("bookings", Booking_controller_1.createBookingController)
-    .put("bookings/:id", Booking_controller_1.updateBookingController)
-    .delete("bookings/:id", Booking_controller_1.deleteBookingController);
+    .get("bookings", Booking_controller_1.getAllBookingsData)
+    .get("bookings/:id", Booking_controller_1.getOneBookingsData)
+    .post("bookings", Booking_controller_1.createBookingsData)
+    .put("bookings/:id", Booking_controller_1.updateBookingsData)
+    .delete("bookings/:id", Booking_controller_1.deleteBookingsData);
 exports.default = exports.bookingRouter;

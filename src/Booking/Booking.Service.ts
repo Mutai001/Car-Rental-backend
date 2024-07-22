@@ -3,33 +3,45 @@ import { TIBooking, TSBooking, BookingsTable } from "../drizzle/schema";
 import { eq } from "drizzle-orm";
 
 // Get all bookings
-export const getAllBookingsService = async (): Promise<TSBooking[] | null> => {
-    const bookings = await db.query.BookingsTable.findMany();
-    return bookings;
-};
+export const getAllBookings = async (limit?: number): Promise<TSBooking[] | null> => {
+    if (limit) {
+        return await db.query.BookingsTable.findMany({
+            limit: limit
+        });
+    }
+    return await db.query.BookingsTable.findMany();
 
-// Get booking by ID
-export const getBookingByIdService = async (booking_id: number): Promise<TSBooking | undefined> => {
-    const booking = await db.query.BookingsTable.findFirst({
-        where: eq(BookingsTable.booking_id, booking_id),
-    });
-    return booking;
-};
+}
 
+// fetch one bookings
+export const fetchOneBookings = async (id: number): Promise<TSBooking | undefined> => {
+return await db.query.BookingsTable.findFirst({
+    where: eq(BookingsTable.booking_id, id)
+})
+}
 
-// Updated function to accept transaction
-export const createBookingServiceWithTransaction = async (booking: TIBooking, trx: any) => {
-    await trx.insert(BookingsTable).values(booking);
-};
+// create bookings
+export const CreateBookings = async (bookings: TIBooking) => {
+    await db.insert(BookingsTable).values(bookings)
+    return "Bookings created successfully"
+}
 
-// Update booking
-export const updateBookingService = async (booking_id: number, booking: TIBooking): Promise<string> => {
-    await db.update(BookingsTable).set(booking).where(eq(BookingsTable.booking_id, booking_id));
+// update Bookings
+    export const UpdateBookings = async (id: number, Booking: TIBooking) => {
+    await db.update(BookingsTable).set(Booking).where(eq(BookingsTable.booking_id, id))
     return "Booking updated successfully";
-};
+}
 
-// Delete booking
-export const deleteBookingService = async (booking_id: number): Promise<string> => {
-    await db.delete(BookingsTable).where(eq(BookingsTable.booking_id, booking_id));
+ 
+
+
+// delete Bookings
+// export const DeleteBookings = async (id: number) => {
+//     await db.delete(BookingsTable).where(eq(BookingsTable.booking_id, id))
+//     return "bookings deleted successfully"
+// }
+
+export const DeleteBookings = async (id: number) => {
+    await db.delete(BookingsTable).where(eq(BookingsTable.booking_id, id))
     return "Booking deleted successfully";
-};
+}

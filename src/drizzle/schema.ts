@@ -15,6 +15,7 @@ export const UsersTable = pgTable("users", {
   contact_phone: varchar("contact_phone", { length: 15 }).notNull(),
   address: varchar("address", { length: 255 }).notNull(),
   role: roleEnum("role").default("user"),
+  // password: varchar("password", { length: 255 }).notNull(),
   created_at: date("created_at").default(sql`CURRENT_TIMESTAMP`),
   updated_at: date("updated_at").default(sql`CURRENT_TIMESTAMP`)
 });
@@ -61,8 +62,8 @@ export const VehiclesTable = pgTable('vehicles', {
 export const BookingsTable = pgTable("bookings", {
   booking_id: serial("booking_id").primaryKey(),
   user_id: integer("user_id").references(() => UsersTable.user_id).notNull(),
-  vehicle_id: integer("vehicle_id").references(() => VehiclesTable.vehicle_id).notNull(),
-  location_id: integer("location_id").references(() => LocationsTable.location_id).notNull(),
+  vehicle_id: integer("vehicle_id").references(() => VehiclesTable.vehicle_id,{onDelete: "cascade"}),
+  location_id: integer("location_id").references(() => LocationsTable.location_id,{onDelete: "cascade"}),
   booking_date: date("booking_date").notNull(),
   return_date: date("return_date").notNull(),
   total_amount: decimal("total_amount", { precision: 10, scale: 2 }).notNull(),
@@ -74,7 +75,7 @@ export const BookingsTable = pgTable("bookings", {
 // Payments Table
 export const PaymentsTable = pgTable("payments", {
   payment_id: serial("payment_id").primaryKey(),
-  booking_id: integer("booking_id").references(() => BookingsTable.booking_id).notNull(),
+  booking_id: integer("booking_id").references(() => BookingsTable.booking_id,{onDelete: "cascade"}),
   amount: decimal("amount", { precision: 10, scale: 2 }).notNull(),
   payment_status: paymentStatusEnum("payment_status").default("Pending"),
   payment_date: date("payment_date").notNull(),
@@ -87,7 +88,7 @@ export const PaymentsTable = pgTable("payments", {
 // Customer Support Tickets Table
 export const CustomerSupportTicketsTable = pgTable("customer_support_tickets", {
   ticket_id: serial("ticket_id").primaryKey(),
-  user_id: integer("user_id").references(() => UsersTable.user_id).notNull(),
+  user_id: integer("user_id").references(() => UsersTable.user_id,{onDelete: "cascade"}),
   subject: varchar("subject", { length: 100 }).notNull(),
   description: text("description").notNull(),
   status: varchar("status", { length: 50 }).notNull(),
@@ -108,7 +109,7 @@ export const LocationsTable = pgTable("locations", {
 // Fleet Management Table
 export const FleetManagementTable = pgTable("fleet_management", {
   fleet_id: serial("fleet_id").primaryKey(),
-  vehicle_id: integer("vehicle_id").references(() => VehiclesTable.vehicle_id).notNull(),
+  vehicle_id: integer("vehicle_id").references(() => VehiclesTable.vehicle_id,{ onDelete: 'cascade' }),
   acquisition_date: date("acquisition_date").notNull(),
   depreciation_rate: decimal("depreciation_rate", { precision: 10, scale: 2 }).notNull(),
   current_value: decimal("current_value", { precision: 10, scale: 2 }).notNull(),

@@ -1,13 +1,13 @@
 import { Hono } from 'hono';
-import { getAllBookingsController, getBookingByIdController, createBookingController, updateBookingController, deleteBookingController } from './Booking.controller';
+import { getAllBookingsData, getOneBookingsData, createBookingsData, updateBookingsData, deleteBookingsData } from './Booking.controller';
 
 export const bookingRouter = new Hono();
 
 bookingRouter
-    .get("bookings", getAllBookingsController)
-    .get("bookings/:id", getBookingByIdController)
-    .post("bookings", createBookingController)
-    .put("bookings/:id", updateBookingController)
-    .delete("bookings/:id", deleteBookingController);
+    .get("bookings", getAllBookingsData)
+    .get("bookings/:id", getOneBookingsData)
+    .post("bookings", createBookingsData)
+    .put("bookings/:id", updateBookingsData)
+    .delete("bookings/:id", deleteBookingsData);
 
 export default bookingRouter;

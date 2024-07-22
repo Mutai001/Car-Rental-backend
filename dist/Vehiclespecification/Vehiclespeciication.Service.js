@@ -13,7 +13,7 @@ exports.getVehicleSpecificationsService = getVehicleSpecificationsService;
 // GET VEHICLE SPECIFICATION BY ID
 const getVehicleSpecificationByIdService = async (id) => {
     const vehicleSpec = await db_1.db.query.VehicleSpecificationsTable.findFirst({
-        where: (0, drizzle_orm_1.eq)(schema_1.VehicleSpecificationsTable.vehicleSpec_id, id)
+        where: (0, drizzle_orm_1.eq)(schema_1.VehicleSpecificationsTable.vehicle_id, id)
     });
     return vehicleSpec;
 };
@@ -26,13 +26,13 @@ const createVehicleSpecificationService = async (vehicleSpec) => {
 exports.createVehicleSpecificationService = createVehicleSpecificationService;
 // UPDATE VEHICLE SPECIFICATION
 const updateVehicleSpecificationService = async (id, vehicleSpec) => {
-    await db_1.db.update(schema_1.VehicleSpecificationsTable).set(vehicleSpec).where((0, drizzle_orm_1.eq)(schema_1.VehicleSpecificationsTable.vehicleSpec_id, id));
+    await db_1.db.update(schema_1.VehicleSpecificationsTable).set(vehicleSpec).where((0, drizzle_orm_1.eq)(schema_1.VehicleSpecificationsTable.vehicle_id, id));
     return "Vehicle specification updated successfully";
 };
 exports.updateVehicleSpecificationService = updateVehicleSpecificationService;
 // DELETE VEHICLE SPECIFICATION
 const deleteVehicleSpecificationService = async (id) => {
-    await db_1.db.delete(schema_1.VehicleSpecificationsTable).where((0, drizzle_orm_1.eq)(schema_1.VehicleSpecificationsTable.vehicleSpec_id, id));
+    await db_1.db.delete(schema_1.VehicleSpecificationsTable).where((0, drizzle_orm_1.eq)(schema_1.VehicleSpecificationsTable.vehicle_id, id));
     return "Vehicle specification deleted successfully";
 };
 exports.deleteVehicleSpecificationService = deleteVehicleSpecificationService;

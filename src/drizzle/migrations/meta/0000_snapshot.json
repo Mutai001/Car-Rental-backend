@@ -1,5 +1,5 @@
 {
-  "id": "78bd5a57-e275-476b-9cae-2ecee0bd88c3",
+  "id": "ace5e188-4bbe-411f-a0a3-d2cbca776c03",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -109,13 +109,13 @@
           "name": "vehicle_id",
           "type": "integer",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
         "location_id": {
           "name": "location_id",
           "type": "integer",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
         "booking_date": {
           "name": "booking_date",
@@ -183,7 +183,7 @@
           "columnsTo": [
             "vehicle_id"
           ],
-          "onDelete": "no action",
+          "onDelete": "cascade",
           "onUpdate": "no action"
         },
         "bookings_location_id_locations_location_id_fk": {
@@ -196,7 +196,7 @@
           "columnsTo": [
             "location_id"
           ],
-          "onDelete": "no action",
+          "onDelete": "cascade",
           "onUpdate": "no action"
         }
       },
@@ -217,7 +217,7 @@
           "name": "user_id",
           "type": "integer",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
         "subject": {
           "name": "subject",
@@ -264,7 +264,7 @@
           "columnsTo": [
             "user_id"
           ],
-          "onDelete": "no action",
+          "onDelete": "cascade",
           "onUpdate": "no action"
         }
       },
@@ -285,7 +285,7 @@
           "name": "vehicle_id",
           "type": "integer",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
         "acquisition_date": {
           "name": "acquisition_date",
@@ -344,7 +344,7 @@
           "columnsTo": [
             "vehicle_id"
           ],
-          "onDelete": "no action",
+          "onDelete": "cascade",
           "onUpdate": "no action"
         }
       },
@@ -413,7 +413,7 @@
           "name": "booking_id",
           "type": "integer",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
         "amount": {
           "name": "amount",
@@ -474,7 +474,7 @@
           "columnsTo": [
             "booking_id"
           ],
-          "onDelete": "no action",
+          "onDelete": "cascade",
           "onUpdate": "no action"
         }
       },

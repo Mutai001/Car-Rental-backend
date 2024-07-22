@@ -1,6 +1,6 @@
 // user.controller.ts
 import { Context } from "hono";
-import { getUsersService, getUserByIdService, createUserService, updateUserService, deleteUserService } from "./User.Service";
+import { getUsersService, getUserByIdService, createUserService, updateUserService, deleteUserService } from "./user.service";
 import { TIUser } from "../drizzle/schema";
 
 // GET ALL USERS

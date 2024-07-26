@@ -76,11 +76,11 @@ export const BookingsTable = pgTable("bookings", {
 export const PaymentsTable = pgTable("payments", {
   payment_id: serial("payment_id").primaryKey(),
   booking_id: integer("booking_id").references(() => BookingsTable.booking_id,{onDelete: "cascade"}),
-  amount: decimal("amount", { precision: 10, scale: 2 }).notNull(),
+  amount: decimal("amount", { precision: 10, scale: 2 }),
   payment_status: paymentStatusEnum("payment_status").default("Pending"),
-  payment_date: date("payment_date").notNull(),
-  payment_method: varchar("payment_method", { length: 50 }).notNull(),
-  transaction_id: varchar("transaction_id", { length: 100 }).notNull(),
+  payment_date: date("payment_date"),
+  payment_method: varchar("payment_method", { length: 50 }),
+  transaction_id: varchar("transaction_id", { length: 100 }),
   created_at: date("created_at").default(sql`CURRENT_TIMESTAMP`),
   updated_at: date("updated_at").default(sql`CURRENT_TIMESTAMP`)
 });

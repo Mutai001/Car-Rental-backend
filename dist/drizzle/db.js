@@ -1,4 +1,8 @@
 "use strict";
+// import "dotenv/config";
+// import { drizzle, NodePgDatabase } from 'drizzle-orm/node-postgres';
+// import { Pool } from 'pg';
+// import * as schema from './schema';
 var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
     var desc = Object.getOwnPropertyDescriptor(m, k);
@@ -24,11 +28,16 @@ var __importStar = (this && this.__importStar) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.db = void 0;
+// const pool = new Pool({
+//   connectionString: process.env.DATABASE_URL,
+// });
+// export const db: NodePgDatabase<typeof schema> = drizzle(pool, { schema, logger: true });
 require("dotenv/config");
-const node_postgres_1 = require("drizzle-orm/node-postgres");
-const pg_1 = require("pg");
+const neon_http_1 = require("drizzle-orm/neon-http");
+const serverless_1 = require("@neondatabase/serverless");
 const schema = __importStar(require("./schema"));
-const pool = new pg_1.Pool({
-    connectionString: process.env.DATABASE_URL,
-});
-exports.db = (0, node_postgres_1.drizzle)(pool, { schema, logger: true });
+const databaseUrl = process.env.Database_URL;
+if (!databaseUrl)
+    throw new Error("Database_URL is not set");
+const sql = (0, serverless_1.neon)(databaseUrl);
+exports.db = (0, neon_http_1.drizzle)(sql, { schema, logger: true });

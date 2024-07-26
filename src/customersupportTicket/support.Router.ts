@@ -6,16 +6,16 @@ import {
   updateCustomerSupportTicketController,
   deleteCustomerSupportTicketController,
 } from './support.controller';
-// import { adminRoleAuth, bothRoleAuth } from '../middlewares/auth.middlewares';
+import { adminRoleAuth,userRoleAuth,bothRoleAuth } from '../middlewares/auth.middlewares';
 
 
 export const customerSupportTicketsRouter = new Hono();
 
 customerSupportTicketsRouter
-  .get("customer-support-tickets",  getAllCustomerSupportTicketsController)
-  .get("customer-support-tickets/:id", getCustomerSupportTicketByIdController)
-  .post("customer-support-tickets",  createCustomerSupportTicketController)
-  .put("customer-support-tickets/:id", updateCustomerSupportTicketController)
-  .delete("customer-support-tickets/:id", deleteCustomerSupportTicketController);
+  .get("customer-support-tickets", bothRoleAuth, getAllCustomerSupportTicketsController)
+  .get("customer-support-tickets/:id",userRoleAuth, getCustomerSupportTicketByIdController)
+  .post("customer-support-tickets",userRoleAuth,  createCustomerSupportTicketController)
+  .put("customer-support-tickets/:id", userRoleAuth, updateCustomerSupportTicketController)
+  .delete("customer-support-tickets/:id",bothRoleAuth, deleteCustomerSupportTicketController);
 
 export default customerSupportTicketsRouter;

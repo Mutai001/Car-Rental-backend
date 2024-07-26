@@ -1,5 +1,5 @@
 {
-  "id": "ace5e188-4bbe-411f-a0a3-d2cbca776c03",
+  "id": "af88a2f0-a3f3-4c54-a191-659f29be5573",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -419,7 +419,7 @@
           "name": "amount",
           "type": "numeric(10, 2)",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
         "payment_status": {
           "name": "payment_status",
@@ -433,19 +433,19 @@
           "name": "payment_date",
           "type": "date",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
         "payment_method": {
           "name": "payment_method",
           "type": "varchar(50)",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
         "transaction_id": {
           "name": "transaction_id",
           "type": "varchar(100)",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
         "created_at": {
           "name": "created_at",

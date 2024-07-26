@@ -75,11 +75,11 @@ CREATE TABLE IF NOT EXISTS "locations" (
 CREATE TABLE IF NOT EXISTS "payments" (
 	"payment_id" serial PRIMARY KEY NOT NULL,
 	"booking_id" integer,
-	"amount" numeric(10, 2) NOT NULL,
+	"amount" numeric(10, 2),
 	"payment_status" "payment_status" DEFAULT 'Pending',
-	"payment_date" date NOT NULL,
-	"payment_method" varchar(50) NOT NULL,
-	"transaction_id" varchar(100) NOT NULL,
+	"payment_date" date,
+	"payment_method" varchar(50),
+	"transaction_id" varchar(100),
 	"created_at" date DEFAULT CURRENT_TIMESTAMP,
 	"updated_at" date DEFAULT CURRENT_TIMESTAMP
 );

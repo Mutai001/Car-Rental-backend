@@ -9,22 +9,22 @@ export const userRouter = new Hono();
 
 // GET ALL USERS - accessible by users and admins
 userRouter
-    .get("users",   getUsersController)
+    .get("users", adminRoleAuth,  getUsersController)
     .post("users",/* adminRoleAuth,*/ zValidator('json', userSchema, (result, c) => {
         if (!result.success) {
             return c.json(result.error, 400);
         }
-    }), createUserController);
+    }),bothRoleAuth, createUserController);
 
 // GET USER BY ID - accessible by both users and admins
 userRouter
-    .get("users/:id",  getUserByIdController)
+    .get("users/:id",bothRoleAuth,  getUserByIdController)
     .put("users/:id",  zValidator('json', userSchema, (result, c) => {
         if (!result.success) {
             return c.json(result.error, 400);
         }
-    }), updateUserController)
+    }),bothRoleAuth, updateUserController)
     // Restrict DELETE route to admins only
-    .delete("users/:id", deleteUserController);
+    .delete("users/:id", bothRoleAuth, deleteUserController);
 
 export default userRouter;

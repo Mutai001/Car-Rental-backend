@@ -71,11 +71,11 @@ exports.BookingsTable = (0, pg_core_1.pgTable)("bookings", {
 exports.PaymentsTable = (0, pg_core_1.pgTable)("payments", {
     payment_id: (0, pg_core_1.serial)("payment_id").primaryKey(),
     booking_id: (0, pg_core_1.integer)("booking_id").references(() => exports.BookingsTable.booking_id, { onDelete: "cascade" }),
-    amount: (0, pg_core_1.decimal)("amount", { precision: 10, scale: 2 }).notNull(),
+    amount: (0, pg_core_1.decimal)("amount", { precision: 10, scale: 2 }),
     payment_status: (0, exports.paymentStatusEnum)("payment_status").default("Pending"),
-    payment_date: (0, pg_core_1.date)("payment_date").notNull(),
-    payment_method: (0, pg_core_1.varchar)("payment_method", { length: 50 }).notNull(),
-    transaction_id: (0, pg_core_1.varchar)("transaction_id", { length: 100 }).notNull(),
+    payment_date: (0, pg_core_1.date)("payment_date"),
+    payment_method: (0, pg_core_1.varchar)("payment_method", { length: 50 }),
+    transaction_id: (0, pg_core_1.varchar)("transaction_id", { length: 100 }),
     created_at: (0, pg_core_1.date)("created_at").default((0, drizzle_orm_1.sql) `CURRENT_TIMESTAMP`),
     updated_at: (0, pg_core_1.date)("updated_at").default((0, drizzle_orm_1.sql) `CURRENT_TIMESTAMP`)
 });

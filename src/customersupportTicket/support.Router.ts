@@ -6,7 +6,7 @@ import {
   updateCustomerSupportTicketController,
   deleteCustomerSupportTicketController,
 } from './support.controller';
-import { adminRoleAuth,userRoleAuth,bothRoleAuth } from '../middlewares/auth.middlewares';
+import { userRoleAuth,bothRoleAuth } from '../middlewares/auth.middlewares';
 
 
 export const customerSupportTicketsRouter = new Hono();

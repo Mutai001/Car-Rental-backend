@@ -11,10 +11,20 @@ import { adminRoleAuth,userRoleAuth,bothRoleAuth } from '../middlewares/auth.mid
 export const locationRouter = new Hono();
 
 locationRouter
-  .get("locations", bothRoleAuth, getAllLocationsController)
-  .get("locations/:id", bothRoleAuth, getLocationByIdController)
-  .post("locations", adminRoleAuth,createLocationController)
-  .put("locations/:id",adminRoleAuth, updateLocationController)
-  .delete("locations/:id", adminRoleAuth,deleteLocationController);
+  .get("locations", 
+    // bothRoleAuth,
+     getAllLocationsController)
+  .get("locations/:id", 
+    // bothRoleAuth,
+     getLocationByIdController)
+  .post("locations", 
+    // adminRoleAuth,
+    createLocationController)
+  .put("locations/:id",
+    // adminRoleAuth, 
+    updateLocationController)
+  .delete("locations/:id",
+    //  adminRoleAuth,
+     deleteLocationController);
 
 export default locationRouter;

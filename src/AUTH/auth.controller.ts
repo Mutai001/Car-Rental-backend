@@ -1,5 +1,5 @@
 import { Context } from "hono";
-import bcrypt from "bcrypt";
+import bcrypt from 'bcryptjs';
 import jwt from "jsonwebtoken";
 import { TSAuth } from "../drizzle/schema";
 import { db } from "../drizzle/db";

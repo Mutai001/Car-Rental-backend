@@ -5,7 +5,6 @@ import { vehicleSpecificationSchema } from '../validator';
 // import { adminRoleAuth, userRoleAuth, bothRoleAuth } from '../middlewares/auth.middlewares';
 
 export const vehicleSpecificationRouter = new Hono();
-// routes 
 // GET ALL VEHICLE SPECIFICATIONS - accessible by users and admins
 vehicleSpecificationRouter
     .get("vehicle-specifications",
